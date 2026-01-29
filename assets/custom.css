@@ -1,0 +1,16 @@
+/* Customizações RAKIM Expert */
+:root {
+    --rakim-primary: #6200ea; /* Roxo Rakim */
+    --rakim-text: #ffffff;
+}
+
+/* Exemplo: Forçando o header a ter a cor da marca */
+header, .navbar { 
+    background-color: var(--rakim-primary) !important;
+    color: var(--rakim-text) !important;
+}
+
+/* Ajustes finos de fonte */
+body {
+    font-family: 'Inter', sans-serif !important;
+}
