@@ -1,0 +1,165 @@
+meta {
+  name: Criar link
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/api/recurrences/create
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/recurrences/create
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "typeCharge": 1,
+        "customer": {
+          "name": "Comprador Teste",
+          "email": "example@test.com",
+          "mobile": "11999999999",
+          "birthDate": "1969-12-31",
+          "documentNumber": "99999999999",
+          "address": {
+            "zipcode": "99999999",
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "29857396-2d61-4258-9758-2066edc1b897",
+          "paymentUrl": "https://app-sandbox.u2pay.com.br/checkout/c8794b9c-5756-4e76-9d59-a0de341a5c30",
+          "type": "recurrences",
+          "amount": 1035,
+          "typeCharge": 1,
+          "totalCharges": 0,
+          "lastPaymentDay": "",
+          "maxNumberOfInstallments": 1,
+          "currency": "BRL",
+          "status": "pending",
+          "createdAt": "2022-02-22 00:00:01",
+          "updatedAt": "2022-02-22 00:00:01",
+          "customer": {
+            "name": "Comprador Teste",
+            "email": "example@test.com",
+            "phone": "11999999999",
+            "documentNumber": "99999999999",
+            "birthDate": "1969-12-31",
+            "createdAt": "2022-02-22 00:00:01",
+            "updatedAt": "2022-02-22 00:00:01"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}app/api/recurrences/create
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "totalCharges": 12,
+        "payment": {
+          "type": "credit",
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiry_month": "09",
+            "expiry_year": "2024",
+            "cvv": "123",
+            "brand": "mastercard"
+          }
+        },
+        "customer": {
+          "document": "99999999999",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+            "zipcode": "99999999",
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "amount": [
+            "The amount field is required."
+          ],
+          "typeCharge": [
+            "The type charge field is required."
+          ],
+          "customer.name": [
+            "The customer.name field is required."
+          ],
+          "customer.email": [
+            "The customer.email field is required."
+          ]
+        }
+      '''
+    }
+  }
+}

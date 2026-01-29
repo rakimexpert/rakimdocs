@@ -1,0 +1,32 @@
+meta {
+  name: Ativando um Split Tardio
+  seq: 7
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Neste endpoint você ativa os recebedores do _**Split Tardio**_, (também chamada de _Definição dos Recebedores_ ou _Participantes da Liquidação da transação_). Você pode obter mais informações, [clicando aqui](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#22600e87-7b71-48f5-9eae-561c8945ecb6).
+  
+  ### PaymentRequest
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | orderId | string | ID identificador do pedido. | Sim |  |
+  | splits | Split\[\] | Lista de divisões do pagamento. | Sim |  |
+  
+  ---
+  
+  ### Split
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | recipientToken | string | Token do Estabelecimento. | Sim |  |
+  | merchantType | string | Tipo de participante do pagamento. Valores possíveis (`PRIMARY`, `SECONDARY`). | Sim |  |
+  | chargeFee | boolean | Define se o participante é o pagador da taxa do pagamento. | Sim | `false` |
+  | type | string | Define a divisão do valor do split de maneira fixa ou percentual. Valores possíveis: (`PERCENTAGE` ou `AMOUNT`). | Sim |  |
+  | amountSplit | number | Valor do split destinado ao estabelecimento participante. Caso o tipo da divisão do valor do split for fixa é necessário informar o campo em centavos, como amount. Exemplo: R$10,32 deve ser informado como 1032. Caso o tipo da divisão do valor do split for em porcentagem é necessário informar o valor em percentual de 0 a 100. Exemplo: 37% deve ser informado como 3700. | Sim |  |
+  | discountGrossAmount | boolean | Define se o cálculo da taxa cobrada pela plataforma de pagamento é sobre o valor líquido ou valor bruto. Valores possíveis  <br>  <br>VALOR LÍQUIDO - false  <br>VALOR BRUTO - true | Não | `false` |
+}

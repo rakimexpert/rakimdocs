@@ -1,0 +1,222 @@
+meta {
+  name: Criar Estabelecimento
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/api/companies/create
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/companies/create
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "representative": {
+          "name": "Lúcia Benedita Galvão",
+          "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+          "mobile": "11997098755",
+          "cpf": "99999999999",
+          "birthDate": "1956-01-03"
+        },
+        "address": {
+          "zipcode": "13310600",
+          "street": "Avenida Caetano Ruggieri",
+          "number": 259,
+          "district": "Parque das Rosas",
+          "city": "Itu",
+          "state": "SP"
+        },
+        "contact": {
+          "name": "Lúcia Benedita Galvão",
+          "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+          "mobile": "11997098755"
+        },
+        "bankAccount": {
+          "bankAccountTypeId": 1,
+          "bankId": 120,
+          "agency": "1202",
+          "account": "1066888",
+          "digitAccount": "8",
+          "holderTypeId": "2",
+          "pixKey": "f359d4cc-97ca-4bea-bd91-8a89af69aadd"
+        },
+        "commercialName": "Bruno e Ana Consultoria Financeira ME",
+        "type": 2,
+        "typeClass": "STO",
+        "socialReason": "Bruno e Ana Consultoria Financeira ME",
+        "documentNumber": "80017668000180",
+        "cnaeId": 656,
+        "foundationDate": "2019-01-05",
+        "companyFormationCode": "04",
+        "automaticAntecipation": true,
+        "isTransactionsPix": true
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Created
+      text: 201
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "company": {
+            "idcompany": 1,
+            "mccId": 208,
+            "companyName": "Bruno E Ana Consultoria Financeira Me",
+            "socialReason": "Bruno E Ana Consultoria Financeira Me",
+            "type": "2",
+            "documentNumber": "80017668000180",
+            "softDescriptor": null,
+            "siteUrl": null,
+            "accessToken": "7612adf805f3408786d9181474977fd607149331",
+            "active": "A"
+          },
+          "address": {
+            "addressId": 36,
+            "street": "Avenida Caetano Ruggieri",
+            "number": "259",
+            "district": "Parque Das Rosas",
+            "city": "Itu",
+            "state": "SP",
+            "complement": null,
+            "zipcode": "13310600",
+            "country": "BRA",
+            "active": "Y"
+          },
+          "contact": {
+            "contactId": 25,
+            "companyId": 18,
+            "name": "Lúcia Benedita Galvão",
+            "birthDate": null,
+            "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+            "mobile": "11997098755",
+            "cpf": null,
+            "rg": null,
+            "createdAt": "2021-12-17 00:00:00"
+          },
+          "bankAccount": {
+            "bankAccountId": 25,
+            "bankId": 120,
+            "companyId": 18,
+            "accountNumber": "1066888",
+            "accountDigit": "8",
+            "branchNumber": "1202",
+            "branchDigit": null,
+            "holderTypeId": "2",
+            "bankAccountTypeId": "1",
+            "createdAt": "2021-12-17 00:00:00",
+            "updatedAt": "2021-12-17 00:00:00"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}app/api/companies/create
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "representative": {
+          "name": "Lúcia Benedita Galvão",
+          "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+          "mobile": "11997098755",
+          "cpf": "99999999999",
+          "birthDate": "1956-01-03"
+        },
+        "address": {
+          "zipcode": "13310600",
+          "street": "Avenida Caetano Ruggieri",
+          "number": 259,
+          "district": "Parque das Rosas",
+          "city": "Itu",
+          "state": "SP"
+        },
+        "contact": {
+          "name": "Lúcia Benedita Galvão",
+          "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+          "mobile": "11997098755"
+        },
+        "bankAccount": {
+          "bankAccountTypeId": 1,
+          "bankId": 120,
+          "agency": "1202",
+          "account": "1066888",
+          "digitAccount": "8",
+          "holderTypeId": "2",
+          "pixKey": "f359d4cc-97ca-4bea-bd91-8a89af69aadd"
+        },
+        "commercialName": "Bruno e Ana Consultoria Financeira ME",
+        "type": 2,
+        "typeClass": "STO",
+        "socialReason": "Bruno e Ana Consultoria Financeira ME",
+        "documentNumber": "80017668000180",
+        "cnaeId": 656,
+        "foundationDate": "2019-01-05",
+        "companyFormationCode": "04",
+        "automaticAntecipation": true,
+        "isTransactionsPix": true
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Estabelecimento já cadastrado."
+        }
+      '''
+    }
+  }
+}

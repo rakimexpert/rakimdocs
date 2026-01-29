@@ -1,0 +1,181 @@
+meta {
+  name: capture
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales/:paymentId/capture
+  body: none
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### PaymentRequest
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | amount | string | Valor a ser capturado do pagamento pré-autorizado em centavos sem vírgula e ponto. | Sim |  |
+  
+  
+  ---
+  
+  ### Parameters
+  
+  | Nome       | Tipo   | Descrição                                | Required | Default |
+  |------------|--------|------------------------------------------|----------|---------|
+  | paymentId  | string | Identificador único do pagamento.        | Sim      |         |
+  
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/capture
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+          "amount": "1035"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 3,
+            "returnCode": "0",
+            "returnMessage": "Sucesso",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "amount": 3990,
+            "fees": 260,
+            "liquid": 3730,
+            "acquirer": "adiq",
+            "releaseAt": "2021-11-04 11:56:50"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/capture
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+          "amount": "1035"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "__general__",
+          "message": "Transação capturada."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/capture
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+          "amount": "1035"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

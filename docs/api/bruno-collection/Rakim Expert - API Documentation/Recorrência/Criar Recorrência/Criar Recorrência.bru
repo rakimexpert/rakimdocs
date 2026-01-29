@@ -1,0 +1,292 @@
+meta {
+  name: Criar Recorrência
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales/subscriptions
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales/subscriptions
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "typeCharge": 3,
+        "totalCharges": 12,
+        "payment": {
+          "type": "credit",
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiry_month": "09",
+            "expiry_year": "2024",
+            "cvv": "123",
+            "brand": "mastercard"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+            "zipcode": "99999999",
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 3,
+            "returnCode": "0",
+            "returnMessage": "Sucesso",
+            "message": "Transação autorizada com sucesso.",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "orderNumber": "6183f4ac7ad8d",
+            "type": "credit",
+            "installments": 1,
+            "brand": "mastercard",
+            "amount": 1035,
+            "fees": 86,
+            "liquid": 949,
+            "acquirer": "adiq",
+            "createdAt": "2021-11-04 11:56:50",
+            "first4Digits": "5201",
+            "last4Digits": "5011",
+            "nsu": "61a7d95711f57",
+            "nextRecurrency": "2022-09-02",
+            "recurrentPaymentId": "8586788b-5fd3-4bcb-a38b-1051dbf952b1",
+            "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                    "street": "Rua teste",
+                    "number": "1",
+                    "district": "Bairro teste",
+                    "complement": "Complemento teste",
+                    "zipcode": "99999999",
+                    "city": "São Paulo",
+                    "state": "SP",
+                    "country": "BRA"
+                }
+            }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales/subscriptions
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "totalCharges": 12,
+        "payment": {
+          "type": "credit",
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiry_month": "09",
+            "expiry_year": "2024",
+            "cvv": "123",
+            "brand": "mastercard"
+          }
+        },
+        "customer": {
+          "document": "99999999999",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+            "zipcode": "99999999",
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "amount": [
+            "The amount field is required."
+          ],
+          "typeCharge": [
+            "The type charge field is required."
+          ],
+          "customer.name": [
+            "The customer.name field is required."
+          ],
+          "customer.email": [
+            "The customer.email field is required."
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales/subscriptions
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "totalCharges": 12,
+        "payment": {
+          "type": "credit",
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiry_month": "09",
+            "expiry_year": "2024",
+            "cvv": "123",
+            "brand": "mastercard"
+          }
+        },
+        "customer": {
+          "document": "99999999999",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+            "zipcode": "99999999",
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 3,
+            "returnCode": "0",
+            "returnMessage": "Sucesso",
+            "message": "Transação autorizada com sucesso.",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "orderNumber": "6183f4ac7ad8d",
+            "type": "credit",
+            "installments": 1,
+            "brand": "mastercard",
+            "amount": 1035,
+            "fees": 86,
+            "liquid": 949,
+            "acquirer": "adiq",
+            "createdAt": "2021-11-04 11:56:50",
+            "first4Digits": "5201",
+            "last4Digits": "5011",
+            "nsu": "61a7d95711f57",
+            "nextRecurrency": "2022-09-02",
+            "recurrentPaymentId": "8586788b-5fd3-4bcb-a38b-1051dbf952b1",
+            "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                    "street": "Rua teste",
+                    "number": "1",
+                    "district": "Bairro teste",
+                    "complement": "Complemento teste",
+                    "zipcode": "99999999",
+                    "city": "São Paulo",
+                    "state": "SP",
+                    "country": "BRA"
+                }
+            }
+        }
+      '''
+    }
+  }
+}

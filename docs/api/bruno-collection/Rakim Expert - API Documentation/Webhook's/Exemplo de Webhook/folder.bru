@@ -1,0 +1,112 @@
+meta {
+  name: Exemplo de Webhook
+  seq: 4
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  
+  Essa é a sessão da documentação destinada a exemplificação da webhook enviada para URL cadastrada pelo lojista variando de acordo com o tipo de notificação.
+  
+  ## Notificação de Pagamento
+  
+  A Notificação de Pagamento é enviada através dos parâmetros apresentados a seguir:
+  
+  ```json Exemplo de Requisição
+  {
+    "event": "PAYMENT.REFUNDED",
+    "data": {
+      "id": "020000026803231938500000065382450000000000",
+      "paymentLinkId": "b566309d-a420-4ff9-be44-a32a374c07f1",
+      "status": 7,
+      "returnCode": "FF",
+      "returnMessage": "Sucesso",
+      "authorizationCode": "006734",
+      "orderNumber": "623b774a48472",
+      "nsu": "623b775052d0e",
+      "transactionType": "credit",
+      "installments": "12",
+      "brand": "mastercard",
+      "amount": 452200,
+      "fees": 15539,
+      "liquid": 0,
+      "refunds": 436661,
+      "acquirer": "adiq",
+      "createdAt": "2022-03-23 16:38:56",
+      "updatedAt": "2022-06-20 10:45:47",
+      "account": {
+        "id": "8284b41c0c234b0f889b087a451de9420f2664fc",
+        "name": "Sueli e Breno Contábil Ltda"
+      },
+      "events": [
+        {
+          "createdAt": "2022-06-20 10:45:47",
+          "type": "PAYMENT.REFUNDED"
+        },
+        {
+          "createdAt": "2022-03-23 16:38:56",
+          "type": "PAYMENT.AUTHORIZED"
+        },
+        {
+          "createdAt": "2022-03-23 16:38:56",
+          "type": "PAYMENT.CREATED"
+        }
+      ]
+    }
+  }
+  ```
+  
+  Sendo o parâmetro `event` destinado ao tipo de evento associado a notificação. Veja a seguir a lista dos eventos associados a notificação:
+  
+  | Evento                        | Descrição                                                                          |
+  | ----------------------------- | ---------------------------------------------------------------------------------- |
+  | **PAYMENT.CREATED**           | Primeiro evento de um pagamento, indica que o pagamento foi criado.                |
+  | **PAYMENT.PRE_AUTHORIZED**    | Esse status indica a reserva do valor do pagamento no cartão do cliente.           |
+  | **PAYMENT.AUTHORIZED**        | Significa que o pagamento foicapturado e debitado do cartão do cliente.            |
+  | **PAYMENT.NOT_AUTHORIZED**    | Significa que o pagamento criado foi negado e não pode ser aprovado.               |
+  | **PAYMENT.CANCELLED**         | Significa que o pagamento foi cancelado.                                           |
+  | **PAYMENT.REFUNDED**          | Significa que o pagamento foi reembolsado.                                         |
+  | **PAYMENT.REFUNDED_REJECTED** | Significa que a solicitação de reembolso do pagamento foi negado.                  |
+  | **PAYMENT.REFUNDED_WAITING**  | Significa que a solicitação de reembolso de pagamento ainda está sendo processada. |
+  | **PAYMENT.REVERSED**          | Signifca que o pagamento foi estornado por chargeback.                             |
+  | **PAYMENT_MED**               | Signifca que o pagamento sofreu MED (Mecanismo Especial de Devolução do PIX)       |
+  
+  Esteja atento a cada evento e mapeie corretamente conforme a descrição de seu significado.
+  
+  ## Notificação de Estabelecimento
+  
+  A notificação de mudança de status do estabelecimento é evniado conforme os parâmetros a seguir:
+  
+  ```json Exemplo de Requisição
+  {
+    "event": "COMPANY.ACTIVE",
+    "data": {
+      "companyId": 1,
+      "mccId": 208,
+      "companyName": "Bruno E Ana Consultoria Financeira Me",
+      "socialReason": "Bruno E Ana Consultoria Financeira Me",
+      "type": "2",
+      "documentNumber": "80017668000180",
+      "softDescriptor": null,
+      "siteUrl": null,
+      "accessToken": "7612adf805f3408786d9181474977fd607149331",
+      "active": "A"
+    }
+  }
+  ```
+  
+  Sendo o parâmetro `event` destinado ao tipo de evento associado a notificação. Veja a seguir a lista dos eventos associados a notificação de estabelecimento:
+  
+  | Evento               | Descrição                                        |
+  | -------------------- | ------------------------------------------------ |
+  | **COMPANY.ACTIVE**   | Significa que o Estabelecimento foi ativado.     |
+  | **COMPANY.DELETED**  | Significa que o Estabelecimento foi deletado.    |
+  | **COMPANY.INACTIVE** | Significa que o Estabelecimento foi inativado.   |
+  | **COMPANY.WAITING**  | Significa que o Estabelecimento está em análise. |
+  | **COMPANY.REJECTED** | Significa que o Estabelecimento foi rejeitado.   |
+  
+  Esteja atento a cada evento e mapeie corretamente conforme a descrição de seu significado.
+}

@@ -1,0 +1,644 @@
+meta {
+  name: sales
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  # API Documentation
+  
+  ## Schemas
+  
+  ### PaymentRequest
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | amount | number | Valor do pagamento em centavos sem vírgula e ponto. | Sim |  |
+  | order_id | string | Seu número de identificação da compra/Número do pedido. | Não |  |
+  | online_id | string | Seu número de identificação adicional da compra. | Não |  |
+  | payment | Payment | Informações do pagamento, modelo de autorização e fluxo a ser executado. | Sim |  |
+  | customer | Customer | Informações relacionados ao cliente vinculado ao pagamento. | Sim |  |
+  | metadata | Metadata\[\] | O parâmetro metadata permite que os usuários anexem informações adicionais a uma transação. Isso pode incluir qualquer par de chave-valor que forneça contexto ou detalhes adicionais sobre a transação. O metadata não é utilizado pela API para processar a transação, mas pode ser útil para o registro do usuário ou para a integração com outros sistemas. | Não |  |
+  
+  ---
+  
+  ### Payment
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | type | string | Tipo de pagamento (ex: credit, debit, etc.). | Sim |  |
+  | installments | number | Número de parcelas do pagamento. | Sim |  |
+  | capture | boolean | Indica se o pagamento deve ser autorizado no momento da criação. Valores possíveis: Autorização - true, Pré-Autorização - false. | Não | Defaults to false |
+  | has_interest | boolean | Indica se o pagamento possui juros. | Não | Defaults to false |
+  | authenticate | boolean | Indica se o comprador será direcionado para o banco emissor para autenticação do cartão. Valores possíveis: Fluxo Normal - false Autenticação 3DS - true | Não | Defaults to false |
+  | softdescriptor | string | Texto exibido na fatura do cartão do comprador. Caso não informado, será enviado o cadastrado na plataforma. | Não |  |
+  | currency_code | string | Moeda na qual o pagamento será processado. Valores possíveis: `BRL` | Não | Defaults to BRL |
+  | card | Card | Informações do Cartão a qual processará o pagamento. | Não |  |
+  
+  ---
+  
+  ### Card
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | holder | string | Nome do comprador impresso no cartão. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | number | string | Número do cartão do comprador. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | expire_month | string | Mês de expiração do cartão com dois dígitos. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | expire_year | string | Ano de expiração do cartão com quatro dígitos. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | brand | string | Bandeira do cartão. Valores possíveis: Visa, Mastercard, Amex, Elo, Hipercard. | Sim |  |
+  | cvc | string | Código de segurança impresso no cartão. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | vault | string | Identificador do cartão no cofre. Obrigatório caso o pagamento seja tokenizado. | Não |  |
+  
+  ---
+  
+  ### Customer
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | name | string | Nome do comprador. | Sim |  |
+  | document | string | Número do documento (CPF) do comprador. | Sim |  |
+  | email | string | E-mail do comprador. | Não |  |
+  | phone | string | Telefone do comprador. | Não |  |
+  | birthDate | string | Data de nascimento do comprador. | Não |  |
+  | ip | string | Endereço IP do dispositivo do comprador. | Não |  |
+  | billing_address | string | Endereço de cobrança. | Não |  |
+  | shipping_address | string | Endereço de envio. | Não |  |
+  
+  ---
+  
+  ### Address
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | street | string | Nome da rua. | Não |  |
+  | number | string | Número do endereço. | Não |  |
+  | district | string | Bairro. | Não |  |
+  | complement | string | Complemento do endereço. | Não |  |
+  | city | string | Cidade. | Não |  |
+  | state | string | Estado abreviado. Ex: SP | Não |  |
+  | zipcode | string | CEP sem pontuações. Ex: 01451000 | Não |  |
+  | country | string | País. Ex: Brasil | Não |  |
+  
+  ---
+  
+  ### Metadata
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | key | string | Chave de metadados. | Não |  |
+  | value | string | Valor dos metadados. | Não |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+          "amount": 1035,
+          "order_id": "6183f4ac7ad8d",
+          "online_id": "HROJSF",
+          "payment": {
+              "type": "credit",
+              "installments": 1,
+              "capture": true,
+              "has_interest": false,
+              "delayed_split": false,
+              "authenticate": false,
+              "softdescriptor": "PAG*TEST",
+              "currency_code": "BRL",
+              "card": {
+                  "holder": "TESTE HOLDER",
+                  "number": "4111111111111111",
+                  "expireMonth": "03",
+                  "expireYear": "2032",
+                  "brand": "visa",
+                  "cvc": "123"
+              }
+          },
+          "customer": {
+              "name": "Comprador Teste",
+              "document": "12345678900",
+              "email": "example@test.com",
+              "phone": "11999999999",
+              "birthDate": "1969-12-31",
+              "ip": "127.0.0.0",
+              "billing_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              },
+              "shipping_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              }
+          },
+          "metadata": {
+              "key": "campo_chave",
+              "value": "campo_value"
+          }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 3,
+            "returnCode": "0",
+            "returnMessage": "Sucesso",
+            "message": "SUCESSO",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "orderNumber": "6183f4ac7ad8d",
+            "onlineId": "HROJSF",
+            "type": "credit",
+            "delayed_split": false,
+            "installments": 1,
+            "brand": "mastercard",
+            "amount": 3990,
+            "fees": 260,
+            "liquid": 3730,
+            "acquirer": "adiq",
+            "metadata": [
+                {
+                    "metadata_key": "key",
+                    "metadata_value": "value"
+                },
+                {
+                    "metadata_key": "key2",
+                    "metadata_value": "value2"
+                }
+            ],
+            "createdAt": "2021-11-04 11:56:50",
+            "expireAt": "2021-11-11 11:56:50",
+            "first4Digits": "5201",
+            "last4Digits": "5011",
+            "nsu": "61a7d95711f57",
+            "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                    "street": "Rua teste",
+                    "number": "1",
+                    "district": "Bairro teste",
+                    "complement": "Complemento teste",
+                    "zipcode": "99999999",
+                    "city": "São Paulo",
+                    "state": "SP",
+                    "country": "BRA"
+                }
+            }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+          "amount": 1035,
+          "order_id": "6183f4ac7ad8d",
+          "online_id": "HROJSF",
+          "payment": {
+              "type": "credit",
+              "installments": 1,
+              "capture": true,
+              "has_interest": false,
+              "delayed_split": false,
+              "authenticate": false,
+              "softdescriptor": "PAG*TEST",
+              "currency_code": "BRL",
+              "card": {
+                  "holder": "TESTE HOLDER",
+                  "number": "5201561015005011",
+                  "expire_month": "09",
+                  "expire_year": "2025",
+                  "brand": "mastercard",
+                  "cvc": "123",
+                  "vault": "120239120312931201239"
+              }
+          },
+          "customer": {
+              "name": "Comprador Teste",
+              "document": "12345678900",
+              "email": "example@test.com",
+              "phone": "11999999999",
+              "birthDate": "1969-12-31",
+              "ip": "127.0.0.0",
+              "billing_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              },
+              "shipping_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              }
+          },
+          "metadata": {
+              "key": "campo_chave",
+              "value": "campo_value"
+          }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Bad Request
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "string",
+          "message": "string"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizado
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+          "amount": 1035,
+          "order_id": "6183f4ac7ad8d",
+          "online_id": "HROJSF",
+          "payment": {
+              "type": "credit",
+              "installments": 1,
+              "capture": true,
+              "has_interest": false,
+              "delayed_split": false,
+              "authenticate": false,
+              "softdescriptor": "PAG*TEST",
+              "currency_code": "BRL",
+              "card": {
+                  "holder": "TESTE HOLDER",
+                  "number": "5201561015005011",
+                  "expire_month": "09",
+                  "expire_year": "2025",
+                  "brand": "mastercard",
+                  "cvc": "123",
+                  "vault": "120239120312931201239"
+              }
+          },
+          "customer": {
+              "name": "Comprador Teste",
+              "document": "12345678900",
+              "email": "example@test.com",
+              "phone": "11999999999",
+              "birthDate": "1969-12-31",
+              "ip": "127.0.0.0",
+              "billing_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              },
+              "shipping_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              }
+          },
+          "metadata": {
+              "key": "campo_chave",
+              "value": "campo_value"
+          }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+          "amount": 1035,
+          "order_id": "6183f4ac7ad8d",
+          "online_id": "HROJSF",
+          "payment": {
+              "type": "credit",
+              "installments": 1,
+              "capture": true,
+              "has_interest": false,
+              "delayed_split": false,
+              "authenticate": false,
+              "softdescriptor": "PAG*TEST",
+              "currency_code": "BRL",
+              "card": {
+                  "holder": "TESTE HOLDER",
+                  "number": "5201561015005011",
+                  "expire_month": "09",
+                  "expire_year": "2025",
+                  "brand": "mastercard",
+                  "cvc": "123",
+                  "vault": "120239120312931201239"
+              }
+          },
+          "customer": {
+              "name": "Comprador Teste",
+              "document": "12345678900",
+              "email": "example@test.com",
+              "phone": "11999999999",
+              "birthDate": "1969-12-31",
+              "ip": "127.0.0.0",
+              "billing_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              },
+              "shipping_address": {
+                  "street": "Rua Rio Paranapanema",
+                  "number": "10",
+                  "disctrict": "Jardim Jóckei",
+                  "complement": "Club A",
+                  "city": "São Carlos",
+                  "state": "SP",
+                  "zipcode": "13565050",
+                  "country": "Brasil"
+              }
+          },
+          "metadata": {
+              "key": "campo_chave",
+              "value": "campo_value"
+          }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "amount": [
+            "The amount field is required."
+          ],
+          "payment.type": [
+            "The payment.type field is required."
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Sucesso com 3DS
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+          "amount": 1035,
+          "order_id": "6183f4ac7ad8d",
+          "online_id": "HROJSF",
+          "payment": {
+              "type": "credit",
+              "installments": 1,
+              "capture": true,
+              "has_interest": false,
+              "delayed_split": false,
+              "authenticate": false,
+              "softdescriptor": "PAG*TEST",
+              "currency_code": "BRL",
+              "card": {
+                  "holder": "TESTE HOLDER",
+                  "number": "4111111111111111",
+                  "expireMonth": "03",
+                  "expireYear": "2032",
+                  "brand": "visa",
+                  "cvc": "123"
+              }
+          },
+          "customer": {
+              "name": "Comprador Teste",
+              "document": "12345678900",
+              "email": "example@test.com",
+              "phone": "11999999999",
+              "birthDate": "1969-12-31",
+              "ip": "127.0.0.0"
+          },
+          "metadata": {
+              "key": "campo_chave",
+              "value": "campo_value"
+          }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 12,
+            "returnCode": "0",
+            "returnMessage": "Aguardando confirmação de necessidade de autenticação por desafio",
+            "message": "Aguardando confirmação de necessidade de autenticação por desafio",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "orderNumber": "6183f4ac7ad8d",
+            "onlineId": "HROJSF",
+            "type": "credit",
+            "delayed_split": false,
+            "installments": 1,
+            "brand": "mastercard",
+            "amount": 3990,
+            "fees": 260,
+            "liquid": 3730,
+            "acquirer": "adiq",
+            "authenticationUrl":"https://api-expert.rakim.test/service/v2/pagbank/challenge/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWQiOiI4MTAyNTg5IiwibmJmIjoxNzE1MDkzNjE5LCJpYXQiOjE3MTUwOTM2MTksImV4cCI6MTcxNTA5NDIxOX0.iylta-n6hpJ59xWjW4wdAfiMwYFospL66aovL8UltmA",
+            "metadata": [
+                {
+                    "metadata_key": "key",
+                    "metadata_value": "value"
+                },
+                {
+                    "metadata_key": "key2",
+                    "metadata_value": "value2"
+                }
+            ],
+            "createdAt": "2021-11-04 11:56:50",
+            "expireAt": "2021-11-11 11:56:50",
+            "first4Digits": "5201",
+            "last4Digits": "5011",
+            "nsu": "61a7d95711f57",
+            "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                    "street": "Rua teste",
+                    "number": "1",
+                    "district": "Bairro teste",
+                    "complement": "Complemento teste",
+                    "zipcode": "99999999",
+                    "city": "São Paulo",
+                    "state": "SP",
+                    "country": "BRA"
+                }
+            }
+        }
+      '''
+    }
+  }
+}

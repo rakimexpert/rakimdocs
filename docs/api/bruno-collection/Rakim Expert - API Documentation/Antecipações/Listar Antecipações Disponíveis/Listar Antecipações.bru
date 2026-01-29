@@ -1,0 +1,192 @@
+meta {
+  name: Listar Antecipações
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}app/api/anticipations/available/:accessToken
+  body: none
+  auth: inherit
+}
+
+params:path {
+  accessToken: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/anticipations/available/:accessToken
+    method: GET
+    mode: json
+    params:path: {
+      accessToken: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "automaticAntecipation": "Y",
+        "type": "pos",
+        "idCompany": 1
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "anticipationsAvailable": [
+            {
+              "anticipationRate": 3.06,
+              "companyName": "Sophia e Ayla Financeira ME",
+              "installmentNumber": 2,
+              "amount": 125,
+              "paymentDate": "2023-01-30 00:00:00",
+              "authorization": "380357",
+              "paymentId": 175,
+              "detailsAnticipated": {
+                "daysAnticipated": 62,
+                "finalAnticipatedRate": 6.32,
+                "finalAnticipatedAmountRate": 7.9,
+                "netValueAnticipated": 117.1
+              }
+            },
+            {
+              "anticipationRate": 3.06,
+              "companyName": "Sophia e Ayla Financeira ME",
+              "installmentNumber": 3,
+              "amount": 125,
+              "paymentDate": "2023-03-02 00:00:00",
+              "authorization": "380357",
+              "paymentId": 176,
+              "detailsAnticipated": {
+                "daysAnticipated": 93,
+                "finalAnticipatedRate": 9.49,
+                "finalAnticipatedAmountRate": 11.86,
+                "netValueAnticipated": 113.14
+              }
+            }
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Encontrado
+  
+  request: {
+    url: {{URL}}app/api/anticipations/available/:accessToken
+    method: GET
+    mode: json
+    params:path: {
+      accessToken: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "automaticAntecipation": "Y",
+        "type": "pos",
+        "idCompany": 1
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Not Found
+      text: 404
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Estabelecimento não encontrado"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizado
+  
+  request: {
+    url: {{URL}}app/api/anticipations/available/:accessToken
+    method: GET
+    mode: json
+    params:path: {
+      accessToken: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "automaticAntecipation": "Y",
+        "type": "pos",
+        "idCompany": 1
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Not Found
+      text: 404
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token invalid"
+        }
+      '''
+    }
+  }
+}

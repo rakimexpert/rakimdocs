@@ -1,0 +1,25 @@
+meta {
+  name: Saque
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Endpoint para solicitar saque do saldo livre no banco digital.
+  
+  - Você pode cadastrar uma webhook só para receber a confirmação do saque, caso não seja enviado, a unica forma de confirmação será visualizar no painel, link EXTRATO BANCÁRIO.
+      
+  - Caso você não envie e chave pix na requisição, utilizaremos a chave cadastrada da loja no momento do onboarding.
+      
+  
+  ## Parâmetros do Objeto
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **amount** | number | xx.xx | sim | \- |
+  | **pixKey** | string | só aceitamos chave aleatória do pix | não | \- |
+  | webHookURL | string | webhook para receber o retorno do saque | não | \- |
+}

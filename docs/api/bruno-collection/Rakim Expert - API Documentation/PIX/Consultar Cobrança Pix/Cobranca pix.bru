@@ -1,0 +1,272 @@
+meta {
+  name: Cobranca pix
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}payments/api/sales/pix/:paymentId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ### ChargePix
+  
+  | **Nome** | **Tipo** | **Descrição** | **Obrigatoriedade** | **Default** |
+  | --- | --- | --- | --- | --- |
+  | `amount` | string | Valor da cobrança em centavos, sem vírgula e ponto. (Max 9999999999). Exemplo: R$ 10,35 = 1035. | Sim |  |
+  | `orderId` | string | ID identificador do pedido ou de compra. (Max 45 caracteres). | Sim |  |
+  | `expiration` | string | Tempo de expiração da cobrança, em segundos. Após o QrCode ou Copia e Cola ser acessado após o tempo de expiração, não será possível pagar a cobrança. | Não |  |
+  | `description` | string | Descrição da cobrança Pix. (Max 64 caracteres). | Não |  |
+  | `customer` | Customer | Informações do pagante da cobrança. | Não |  |
+  | `name` | string | Nome do pagante da cobrança. (Max 80 caracteres). | Sim |  |
+  | `documentNumber` | string | Número do documento do pagante da cobrança. (Max 14 caracteres). | Sim |  |
+  | `email` | string | Email de contato do pagante da cobrança. (Max 80 caracteres). | Sim |  |
+  | `address` (object) | object | Informações de endereço do pagante. | Não |  |
+  | `splits` (array) | array | Informações do Split de Pagamento. Informar caso seja uma operação de Split de Pagamento. | Não |  |
+  | `recipientToken` | string | Token do Estabelecimento. (Max 40 caracteres). | Sim |  |
+  | `merchantType` | string | Tipo de participante do pagamento. Valores permitidos: PRIMARY, SECONDARY. | Sim |  |
+  | `chargeFee` | boolean | Define se o participante é o pagador da taxa do pagamento. Valores permitidos: true, false. Defaults to false. | Não | false |
+  | `discountGrossAmount` | boolean | Define se o cálculo da taxa cobrada pela plataforma de pagamento é sobre o valor líquido ou valor bruto. Somente utilizado para as entidades tipo SECONDARY. | Não | false |
+  | `type` | string | Define a divisão do valor do split de maneira fixa ou percentual. Valores permitidos: PERCENTAGE, AMOUNT. | Sim |  |
+  | `amountSplit` | integer | Valor do split destinado ao estabelecimento participante. Se o tipo for FIXO, informar em centavos (ex: 1032). Se for PERCENTUAL, informar como 0 a 100. | Sim |  |
+  
+  ---
+  
+  ### Customer
+  
+  | **Nome** | **Tipo** | **Descrição** | **Obrigatoriedade** | **Default** |
+  | --- | --- | --- | --- | --- |
+  | `name` | string | Nome do pagante da cobrança. (Max 80 caracteres). | Não |  |
+  | `documentNumber` | string | Número do documento do pagante da cobrança. (Max 14 caracteres). | Não |  |
+  | `email` | string | Email de contato do pagante da cobrança. (Max 80 caracteres). | Não |  |
+  | `address` | Address | Informações do pagante da cobrança. | Não |  |
+  
+  ---
+  
+  ### Address
+  
+  | **Nome** | **Tipo** | **Descrição** | **Obrigatoriedade** | **Default** |
+  | --- | --- | --- | --- | --- |
+  | `zipCode` | string | CEP do logradouro. (Max 8 caracteres). | Não |  |
+  | `street` | string | Endereço do logradouro. (Max 255 caracteres). | Não |  |
+  | `city` | string | Cidade do logradouro. (Max 50 caracteres). | Não |  |
+  | `state` | string | Estado do logradouro, em formato de sigla. (Max 2 caracteres). | Não |  |
+  | `country` | string | País do logradouro. (Max 3 caracteres). Defaults to BRA. | Não | BRA |
+  
+  ---
+  
+  ### Split
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | recipientToken | string | Token do Estabelecimento. | Sim |  |
+  | merchantType | string | Tipo de participante do pagamento. Valores possíveis (`PRIMARY`, `SECONDARY`). | Sim |  |
+  | chargeFee | boolean | Define se o participante é o pagador da taxa do pagamento. | Sim | `false` |
+  | type | string | Define a divisão do valor do split de maneira fixa ou percentual. Valores possíveis: (`PERCENTAGE` ou `AMOUNT`). | Sim |  |
+  | amountSplit | number | Valor do split destinado ao estabelecimento participante. Caso o tipo da divisão do valor do split for fixa é necessário informar o campo em centavos, como amount. Exemplo: R$10,32 deve ser informado como 1032. Caso o tipo da divisão do valor do split for em porcentagem é necessário informar o valor em percentual de 0 a 100. Exemplo: 37% deve ser informado como 3700.  <br>  <br>Obs1 - A soma dos percentuais das Entidades Recebedoras (lojas) no split, não pode ser maior que 100% pois a transação será negada.  <br>  <br>Obs2 - As Entidades Recebedoras (lojas) no split não podem ter valores negativos informados, mesmo que as taxas sejam cobradas de uma única Entidade Recebedora. Se a Taxa for cobrada de uma unica entidade e o valor liquido a receber ficar negativo, a transação será negada. | Sim |  |
+  | discountGrossAmount | boolean | Define se o cálculo da taxa cobrada pela plataforma de pagamento é sobre o valor líquido ou valor bruto. Valores possíveis  <br>  <br>VALOR LÍQUIDO - false  <br>  <br>VALOR BRUTO - true  <br>  <br>Somente utilizado para as entidades tipo SECONDARY. | Não | `false` |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 2b2e9984-b5f5-4095-9daf-48b60b6f129a
+    }
+  
+    headers: {
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "orderId": "2360c77b-8a82-463d-b875-543b234fd087",
+        "dueDate": "2022-05-23",
+        "customer": {
+          "name": "Comprador Teste",
+          "documentNumber": "99999999999",
+          "email": "example@test.com",
+          "address": {
+            "zipCode": "99999999",
+            "street": "Rua teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Created
+      text: 201
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": 1,
+          "returnCode": "0",
+          "returnMessage": "Sucesso",
+          "paymentId": "2b2e9984-b5f5-4095-9daf-48b60b6f129a",
+          "orderNumber": "2360c77b-8a82-463d-b875-543b234fd087",
+          "type": "pix",
+          "qrCodeContent": "00020101021226990014br.gov.bcb.pix2577pix-h.bpp.com.br/23114447/qrs1/v2/cobv/01RKz6ZmAxbBtdsL2lSJpxgHfh4idekaAeCHZd5204000053039865406100.005802BR5922Leonardo Carvalho Nori6006MATERA62070503***63042D74",
+          "qrCodeUrl": "https://pix-h.bpp.com.br/23114447/qrs1/v2/cobv/01RKz6ZmAxbBtdsL2lSJpxgHfh4idekaAeCHZd",
+          "dueDate": "2022-05-23",
+          "amount": 1035,
+          "liquid": 0,
+          "fees": 0,
+          "acquirer": "teto",
+          "createdAt": "2021-11-04 11:56:50",
+          "customer": {
+            "name": "Comprador Teste",
+            "email": "example@test.com",
+            "documentNumber": "99999999999"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Encontrada
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 2b2e9984-b5f5-4095-9daf-48b60b6f129a
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "orderId": "2360c77b-8a82-463d-b875-543b234fd087",
+        "dueDate": "2022-05-23",
+        "customer": {
+          "name": "Comprador Teste",
+          "documentNumber": "99999999999",
+          "email": "example@test.com",
+          "address": {
+            "zipCode": "99999999",
+            "street": "Rua teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Not Found
+      text: 404
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Transaction not found"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizado
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 2b2e9984-b5f5-4095-9daf-48b60b6f129a
+    }
+  
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "orderId": "2360c77b-8a82-463d-b875-543b234fd087",
+        "dueDate": "2022-05-23",
+        "customer": {
+          "name": "Comprador Teste",
+          "documentNumber": "99999999999",
+          "email": "example@test.com",
+          "address": {
+            "zipCode": "99999999",
+            "street": "Rua teste",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        }
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

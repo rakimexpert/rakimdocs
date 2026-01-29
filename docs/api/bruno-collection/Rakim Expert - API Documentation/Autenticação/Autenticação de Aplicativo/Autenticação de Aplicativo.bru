@@ -1,0 +1,47 @@
+meta {
+  name: Autenticação de Aplicativo
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/api/login
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  Esse é o endpoint destinado a **Autenticação de Aplicativo (AppAuth)** na qual contempla os recursos de **Estabelecimento** e **Antecipação**. Para mais informações a respeito da autenticação [clique aqui](https://go.postman.co/workspace/ee0b02ef-ba3d-4dca-8b4d-61c6a6496517/documentation/40662984-e8d69f87-01de-4273-81a1-0cc9713bce68?entity=folder-462c2b70-7030-4123-9932-586913010790).
+}
+
+example {
+  name: Autenticação de Aplicativo
+  
+  request: {
+    url: {{URL}}api/login
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {}
+      '''
+    }
+  }
+}

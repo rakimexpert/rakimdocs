@@ -1,0 +1,357 @@
+meta {
+  name: Split tardio
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales/splits/delayed/:paymentId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: https://api.rakim.com.br/app/payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "orderId": "6183f4ac7ad8d",
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+      '
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "receivers": [
+            {
+              "account": {
+                "id": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+                "name": "César E Rosângela Construções Me"
+              },
+              "merchantType": "SECONDARY",
+              "type": "AMOUNT",
+              "amount": {
+                "total": 200,
+                "fees": 0,
+                "liquid": 200
+              },
+              "chargeFee": "false"
+            },
+            {
+              "account": {
+                "id": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+                "name": "César E Rosângela Construções Me"
+              },
+              "merchantType": "SECONDARY",
+              "type": "PERCENTAGE",
+              "amount": {
+                "total": 380,
+                "fees": 0,
+                "liquid": 380
+              },
+              "chargeFee": "false"
+            },
+            {
+              "account": {
+                "id": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+                "name": "Antonio e Mariana Financeira Ltda"
+              },
+              "merchantType": "PRIMARY",
+              "type": "PERCENTAGE",
+              "amount": {
+                "total": 1035,
+                "fees": 666,
+                "liquid": 369
+              },
+              "chargeFee": "true"
+            }
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "orderId": "6183f4ac7ad8d",
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+      '
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Transaction not found"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "orderId": "6183f4ac7ad8d",
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+      '
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "string",
+          "message": "string"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: json
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "orderId": "6183f4ac7ad8d",
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+      '
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

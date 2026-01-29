@@ -1,0 +1,47 @@
+meta {
+  name: Casos de Uso
+  seq: 7
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Essa é a sessão da documentação destinada ao esclarecimento de casos de uso relacionados a API de Estabelecimentos. Nela, você encontrará exemplos de uso e observações sobre a utilização da API.
+  
+  ## Criação de Estabelecimento
+  
+  A [criação de estabelecimento](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#4d6c5066-1fac-41ae-8dd7-140a862a61aa) só pode ser utilizada por **estabelecimentos criados como whitelabel** em nossa plataforma. Assim, **estabelecimentos criados como loja** não podem usufruir dessa funcionalidade, visto que a ideia desse endpoint é oportunizar a criação de lojas para empresas que possuem outras abaixo dela, como franqueadoras, matrizes e outras.
+  
+  Além disso, considere **estabelecimentos** como quaisquer companhias/empresas/pessoas usuárias da plataforma, seja eles pessoa física ou pessoa jurídica. Dessa maneira, no [endpoint criação de estabelecimento](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#4d6c5066-1fac-41ae-8dd7-140a862a61aa) é possível criar tanto estabelecimentos em nome de pessoa física quanto pessoa jurídica.\]
+  
+  ## Criação de Estabelecimento - Pessoa Física
+  
+  Para a criação de estabelecimentos em nome de pessoa física é necessário fazer algumas considerações de adaptação do envio da requisição na API:
+  
+  - Considere como o parâmetro `commercialName`, o nome de marca da pessoa física;
+      
+  - Considere como o parâmetro `socialReason`, o nome completo da pessoa física;
+      
+  - Considere como o parâmetro `documentNumber`, o número do cadastro de pessoa física (CPF);
+      
+  - Considere como o parâmetro `cnaeId`, o ID identificador do cnae `7490-1/99` reservado para pessoas físicas em nossa plataforma ([clique aqui](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#a9a8994c-ba0a-4904-9e2d-97ac15149360) para obter mais informações do endpoint de listagem dos CNAE's);
+      
+  - Considere como o parâmetro `foundationDate`, a data de nascimento da pessoa física;
+      
+  - Considere como o parâmetro `companyFormationCode` igual a `06 - Empresa Individual de Responsabilidade Limitada` para pessoas físicas;
+      
+  - Considere como o parâmetro `representative`, os dados da própria pessoa física;
+      
+  - Considere como o parâmetro `address`, o endereço da pessoa física;
+      
+  
+  Além disso, a **conta bancária** deve ser vinculado ao número do documento da pessoa física e os dados cadastrais e é onde será realizada as liquidações de pagamento criadas na plataforma.
+  
+  ## Criação de Estabelecimento - Pessoa Jurídica
+  
+  A criação de estabelecimento em nome da pessoa jurídica é intuitiva e conforme os parâmetros necessários no [endpoint criação de estabelecimento](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#4d6c5066-1fac-41ae-8dd7-140a862a61aa). Entretanto, é necessário que os dados enviados estejam de acordo com o Cartão CNPJ da empresa, visto que, cadastro de estabelecimentos com informações inconsistentes como `tipo de composição da empresa`, `endereços cadastrais`, `representantes`, entre outros, poderão ser recusados.
+  
+  Por outro lado, assim como na pessoa física, a **conta bancária** deve estar vinculada ao CNPJ do estabelecimento, visto que, liquidações de pagamentos, não serão realizadas para contas bancárias não vinculadas ao CNPJ.
+}

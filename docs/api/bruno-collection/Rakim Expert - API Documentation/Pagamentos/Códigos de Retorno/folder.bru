@@ -1,0 +1,58 @@
+meta {
+  name: Códigos de Retorno
+  seq: 14
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Os códigos de retorno da API são utilizadas pelas aplicações-clientes como forma de auxiliar na tomada de decisão da sua empresa.
+  
+  Por exemplo, ao receber um código de retorno **Limite excedido ou sem saldo** não é necessáro a retentativa de aprovação da transação com o mesmo cartão pois este será negada novamente.
+  
+  Assim, recomendamos que sua aplicação mapeie todos os **códigos de retornos.**
+  
+  Veja o exemplo de resposta contendo o schema de código de retorno:
+  
+  ``` json
+  {
+      "returnCode": "0",
+      "returnMessage": "Sucesso."
+  }
+  
+   ```
+  
+  # Tabela de Resposta e Descrição
+  
+  | Resposta | Descrição |
+  | --- | --- |
+  | 0, 00, 4, 6 | Transação autorizada com sucesso. |
+  | 01 | Transação não autorizada. Transação referida (suspeita de fraude) pelo banco emissor. |
+  | 02 | Transação não autorizada. Transação referida (suspeita de fraude) pelo banco emissor. |
+  | 03 | Transação não permitida. Erro no código TEF. |
+  | 04 | Transação não autorizada. Cartão bloqueado pelo banco emissor. |
+  | 05 | Transação não autorizada. Cartão inadimplente (_Do not honor_). |
+  | 06 | Transação não autorizada. Cartão cancelado. |
+  | 07 | Transação negada. Reter cartão condição especial. |
+  | 08 | Transação não autorizada. Código de segurança inválido. |
+  | 09 | Transação cancelada parcialmente com sucesso. |
+  | 10 | Transação não autorizada pelo emissor. |
+  | 11 | Transação autorizada com sucesso para cartão emitido no exterior. |
+  | 12 | Transação inválida, erro no cartão. |
+  | 13 | Transação não permitida. Valor da transação inválido. |
+  | 14 | Transação não autorizada. Cartão inválido. |
+  | 15 | Banco emissor indisponível ou inexistente. |
+  | 16 | Transação não autorizada. Falha na trilha. |
+  | 19 | Refaça a transação ou tente novamente mais tarde. |
+  | 21 | Cancelamento não efetuado. Transação não localizada. |
+  | 22 | Parcelamento inválido. Número de parcelas inválidas. |
+  | 23 | Transação não autorizada. Valor da prestação inválido. |
+  | 24 | Quantidade de parcelas inválida. |
+  | 25 | Transação não autorizada. Transação original não encontrada. |
+  | 26 | Transação não autorizada. Transação duplicada. |
+  | 27 | Transação não autorizada. Arquivo inválido. |
+  | 28 | Transação não autorizada. Arquivo inválido. |
+  | 29 | Transação não autorizada. Arquivo inválido. |
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Consultando as Taxas da Transação
+  seq: 11
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Neste endpoint você pode consultar Taxas da Transação detalhada.
+  
+  A resposta inclui vários atributos, como o número e valores das parcelas, taxas totais e valores líquidos.
+  
+  ## Query Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | payment_methods | string | Meios de pagamento dos quais o integrador gostaria de recuperar taxas. | Sim |  |
+  | amount | int32 | Valor original da transação. | Sim | 10000 |
+  | brand | string | A bandeira do cartão de crédito. | Não |  |
+  | max_installments | int32 | Quantidade máxima de parcelas permitidas. | Não | 12 |
+}

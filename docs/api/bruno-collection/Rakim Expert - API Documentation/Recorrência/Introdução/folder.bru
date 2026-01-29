@@ -1,0 +1,26 @@
+meta {
+  name: Introdução
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Essa é a sessão de introdução do escopo de API relacionado as recorrências presentes na plataforma. Com ela é possível que você crie cobranças de planos mensais (recorrentes) para usuários de sua plataforma por meio do endpoint de [Criação de Recorrência](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#f5bcfd0f-c1af-4a91-8209-60922e43cbde) ou pelo endpoint de [Criação de Link de Recorrência](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#52571b3c-fd30-41f2-bc25-d3a10cde2e4f).
+  
+  Geralmente, plataformas de planos, mensalidades e assinaturas utilizam esse modelo de aprovação de pagamento, na qual o primeiro pagamento é realizado pelo comprador e os demais são realizados e autorizados automaticamente de acordo com o fluxo/modalidade escolhida pelo estabelecimento. Veja a seguir modalidades de recorrência suportados por nossa plataforma.
+  
+  ## Recorrência Padrão
+  
+  Essa é a modalidade de recorrência, na qual a recorrência acontece e é aplicada até o momento do cancelamento dessa recorrência, ou seja, ela irá acontecer até o tempo que for necessário desde que o cliente ou estabelecimento não cancele a recorrência em um dado momento.
+  
+  ## Recorrência até uma data
+  
+  Essa é a modalidade de recorrência, na qual a recorrência acontece até uma data limite ser excedida. Geralmente, são recorrências utilizadas por plataforma que apresentam licenças de utilização de um serviço até um momento através de um pagamento mensal.
+  
+  ## Recorrência até Nº parcelas
+  
+  Essa é uma modalidade, na qual a recorrência acontece até um número **n de vezes**, ou seja, enquanto aquela quantidade n estabelecida não ser superada, a recorrência continuará aprovando e autorização pagamentos automaticamente.
+}

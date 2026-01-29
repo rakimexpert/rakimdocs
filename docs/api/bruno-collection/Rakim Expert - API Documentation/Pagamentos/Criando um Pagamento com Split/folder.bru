@@ -1,0 +1,128 @@
+meta {
+  name: Criando um Pagamento com Split
+  seq: 3
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Neste endpoint você pode criar um pagamento **Pré-autorizado** ou **Autorizado** com um **S**_**plit de Liquidação**_ no arranjo de pagamento.
+  
+  Para criar um pagamento com split é necessário fazer um **POST** para o recurso _**Sales**_ informando no payload o valor da transação em **Amount** com as informações do pagamento dentro dos objetos payment e customer conforme o exemplo.
+  
+  Também é necessário um **array de splits** com no mínimo dois objetos representando os integrantes do split de liquidação. O primeiro objeto do array **DEVE** ter o atributo merchantType definido como _PRIMARY_, e seu atributo recipientToken DEVE representar o accessToken vinculado ao lojista onde a transação ocorreu.
+  
+  Os demais objetos terão o atributo merchantType como _SECONDARY_ e seu recipientToken referente ao accessToken de outro lojista que deseja participar do split.
+  
+  _OBSERVAÇÕES_:
+  
+  - O array de splits só aceita um único integrante como PRIMARY.
+      
+  - O integrante PRIMARY _**NÃO**_ pode receber menos que 1% da transação.
+      
+  - A soma dos valores a receber entre os participantes do split _**NÃO**_ pode ser diferente do valor líquido da transação.
+      
+  
+  # **Schemas**
+  
+  ### PaymentRequest
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | amount | number | Valor do pagamento em centavos sem vírgula e ponto. | Sim |  |
+  | order_id | string | Seu número de identificação da compra/Número do pedido. | Não |  |
+  | online_id | string | Seu número de identificação adicional da compra/Número do pedido. | Não |  |
+  | payment | Payment | Informações do pagamento, modelo de autorização e fluxo. | Sim |  |
+  | customer | Customer | Informações do cliente. | Sim |  |
+  | splits | Split\[\] | Lista de divisões do pagamento. | Não |  |
+  | metadata | Metadata\[\] | O parâmetro metadata permite que os usuários anexem informações adicionais a uma transação. Isso pode incluir qualquer par de chave-valor que forneça contexto ou detalhes adicionais sobre a transação. O metadata não é utilizado pela API para processar a transação, mas pode ser útil para o registro do usuário ou para a integração com outros sistemas. | Não |  |
+  
+  ---
+  
+  ### Payment
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | type | string | Tipo de pagamento (ex: credit, debit, etc.). | Sim |  |
+  | installments | number | Número de parcelas do pagamento. | Sim |  |
+  | capture | boolean | Indica se o pagamento deve ser autorizado no momento da criação. Valores possíveis: Autorização - true, Pré-Autorização - false. | Não | Defaults to false |
+  | has_interest | boolean | Indica se o pagamento possui juros. | Não | Defaults to false |
+  | authenticate | boolean | Indica se o comprador será direcionado para o banco emissor para autenticação do cartão. Valores possíveis: Fluxo Normal - false Autenticação 3DS - true | Não | Defaults to false |
+  | softdescriptor | string | Texto exibido na fatura do cartão do comprador. Caso não informado, será enviado o cadastrado na plataforma. | Não |  |
+  | currency_code | string | Moeda na qual o pagamento será processado. Valores possíveis: `BRL` | Não | Defaults to BRL |
+  | card | Card | Informações do Cartão a qual processará o pagamento. | Não |  |
+  
+  ---
+  
+  ### Card
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | holder | string | Nome do comprador impresso no cartão. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | number | string | Número do cartão do comprador. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | expiryMonth | string | Mês de expiração do cartão com dois dígitos. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | expiryYear | string | Ano de expiração do cartão com quatro dígitos. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | brand | string | Bandeira do cartão. Valores possíveis: Visa, Mastercard, Amex, Elo, Hipercard. | Sim |  |
+  | cvc | string | Código de segurança impresso no cartão. Obrigatório caso o pagamento não seja tokenizado. | Não |  |
+  | vault | string | Identificador do cartão no cofre. Obrigatório caso o pagamento seja tokenizado. | Não |  |
+  
+  ---
+  
+  ### Customer
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | name | string | Nome do comprador. | Sim |  |
+  | document | string | Número do documento (CPF) do comprador. | Sim |  |
+  | email | string | E-mail do comprador. | Não |  |
+  | phone | string | Telefone do comprador. | Não |  |
+  | birthDate | string | Data de nascimento do comprador. | Não |  |
+  | ip | string | Endereço IP do dispositivo do comprador. | Não |  |
+  | billing_address | string | Endereço de cobrança. | Não |  |
+  | shipping_address | string | Endereço de envio. | Não |  |
+  
+  ---
+  
+  ### Address
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | street | string | Nome da rua. | Não |  |
+  | number | string | Número do endereço. | Não |  |
+  | district | string | Bairro. | Não |  |
+  | complement | string | Complemento do endereço. | Não |  |
+  | city | string | Cidade. | Não |  |
+  | state | string | Estado abreviado. Ex: SP | Não |  |
+  | zipcode | string | CEP sem pontuações. Ex: 01451000 | Não |  |
+  | country | string | País. Ex: Brasil | Não |  |
+  
+  ---
+  
+  ### Metadata
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | key | string | Chave de metadados. | Não |  |
+  | value | string | Valor dos metadados. | Não |  |
+  
+  ---
+  
+  ### Split
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | recipientToken | string | Identificador do recebedor do split. | Sim |  |
+  | merchantType | string | Tipo do recebedor (`PRIMARY`, `SECONDARY`). | Sim |  |
+  | chargeFee | boolean | Indica se a taxa será cobrada deste recebedor. | Sim |  |
+  | type | string | Tipo de divisão (`PERCENTAGE` ou `AMOUNT`). | Sim |  |
+  | amountSplit | number | Valor ou porcentagem do split. | Sim |  |
+  
+  ### Metadata
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | key | string | Chave de metadados. | Não |  |
+  | value | string | Valor dos metadados. | Não |  |
+}

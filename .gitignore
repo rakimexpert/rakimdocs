@@ -1,0 +1,8 @@
+# Bruno local settings
+.bru/
+node_modules/
+
+# Secrets and Environments
+.env
+.env.*
+*.local

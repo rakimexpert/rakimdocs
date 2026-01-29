@@ -1,0 +1,169 @@
+meta {
+  name: Busca extrato
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}app/api/extracts
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~initialDate: aaaa-mm-dd
+  ~finalDate: aaaa-mm-dd
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/extracts
+    method: GET
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "initialDate": "2022-01-01",
+        "finalDate": "2022-01-15"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "companyName": "Bruno E Ana Consultoria Financeira Me",
+            "documentNumber": "80017668000180",
+            "extracts": {
+                "amount": 200,
+                "paymentDate": "2022-01-05 00:00:00",
+                "status": "Transferido",
+                "extractDetails": [
+                    {
+                        "nsu": "205402",
+                        "authorization": "293116",
+                        "grossValue": 200,
+                        "netValue": 190,
+                        "discountFee": 10,
+                        "installment": 1,
+                        "transactionDate": "2022-01-04 14:23:27"
+                    }
+                ]
+            }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizado
+  
+  request: {
+    url: {{URL}}app/api/extracts
+    method: GET
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "initialDate": "2022-01-01",
+        "finalDate": "2022-01-15"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}app/api/extracts
+    method: GET
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "initialDate": "01/01/2022",
+        "finalDate": "2022-01-15"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "initialDate": [
+            "The initial date does not match the format Y-m-d."
+          ],
+          "finalDate": [
+            "The final date does not match the format Y-m-d."
+          ]
+        }
+      '''
+    }
+  }
+}

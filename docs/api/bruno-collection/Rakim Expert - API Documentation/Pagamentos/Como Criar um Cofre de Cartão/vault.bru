@@ -1,0 +1,123 @@
+meta {
+  name: vault
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/vaults/cards
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/vaults/cards
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "vaultId": "2beaeb98-391d-41d9-8685-61464f3c0789"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/vaults/cards
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

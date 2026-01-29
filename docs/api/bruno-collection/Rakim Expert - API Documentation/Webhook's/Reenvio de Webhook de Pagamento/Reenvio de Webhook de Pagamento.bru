@@ -1,0 +1,160 @@
+meta {
+  name: Reenvio de Webhook de Pagamento
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/payments/api/notifications/webhooks/:paymentId/retry
+  body: json
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+body:json {
+  {
+      
+  }
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/notifications/webhooks/:paymentId/retry
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "url": "string",
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Webhook sent"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/notifications/webhooks/:paymentId/retry
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "url": "string",
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/notifications/webhooks/:paymentId/retry
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Not Found
+      text: 404
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Payment not found"
+        }
+      '''
+    }
+  }
+}

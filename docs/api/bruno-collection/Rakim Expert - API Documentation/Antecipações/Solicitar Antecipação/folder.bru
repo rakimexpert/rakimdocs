@@ -1,0 +1,29 @@
+meta {
+  name: Solicitar Antecipação
+  seq: 4
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Esse é o endpoint destinada a consulta dos pagamentos aprovados que estão disponíveis a serem antecipados.
+  
+  ## Path Params
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | accessToken | string | Código identificador do estabelecimento. | Sim |  |
+  
+  ## Body Params
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | anticipations | Anticipation[] | Lista de todos os pagamentos para solicitar a antecipação do pagamento. | Sim |  |
+  
+  ### Anticipation
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | number | ID identificador do pagamento | Sim |  |
+}

@@ -1,0 +1,40 @@
+meta {
+  name: Upload de documentos
+  seq: 3
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  EndPoint destinado ao upload de documentos para onboarding cliente. Cada documento deve ser enviado separadamente em uma requisição.
+  
+  Tipos de formatos de arquivos aceitos:
+  
+  .jpg
+  
+  ,png
+  
+  ,jpeg
+  
+  ,pdf
+  
+  - É preferível que envie apenas como PDF, pois outros tipos podem não ser aceitos durante o onboarding e poderá ser solicitado manualmente a troca dos docuemntos.
+      
+  - Mesmo que haja falha no envio dos documentos o retorno será 200, pois o onboarding é assíncrono e será solicitado manualmente a troca dos documentos.
+      
+  
+  ## Parâmetros da Requisição
+  
+  ### Estabelecimento
+  
+  | Nome | Tipo | Descrição | Obrigatório |
+  | --- | --- | --- | --- |
+  | RG | rg | RG do Representante (Obrigatório quando CNH não  <br>ao é enviada) | Não |
+  | CNH | cnh | CNH do Representante (Obrigatório quando RG não  <br>ao é enviado) | Não |
+  | CNPJ | cnpj | Cartão CNPJ da empresa quando aplicável | Não |
+  | COMPROVANTE DE ENDEREÇO | proof_of_address | Comprovante de endereço do representante da empresa | Sim |
+  | CONTRATO SOCIAL | social_contract | Contrato Sicial da empresa quando aplicável | Não |
+  | SELFIE COM DOCUMENTO | selfie | Selfie do Representante da empresa segurando o documento de identificação | Sim |
+}

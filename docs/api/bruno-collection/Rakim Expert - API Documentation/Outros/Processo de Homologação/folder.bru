@@ -1,0 +1,36 @@
+meta {
+  name: Processo de Homologação
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Essa é a sessão da documentação destinada ao esclarecimento de como funciona o processo de homologação dentro da nossa plataforma.
+  
+  Antes de tudo, vale-se dizer que o Processo de Homologação é um **evento posterior** ao processo de validação dos dados cadastrais da empresa e estabelecimento de relação comercial entre as partes.
+  
+  Vale ressaltar, que esse processo é importante para o **alinhamento** e **interoperabilidade** entre os sistemas envolvidos, sendo necessário, a validação de alguns processos em ambiente de testes para aceitação e homologação do sistema cliente em ambiente de produção **independentemente do tipo de operação envolvida**.
+  
+  Assim, para dar-se início ao processo de homologação é necessário a [Criação de Conta em Ambiente de Homologação](https://api-sandbox.rakim.com.br), sendo válido dizer que as informações contidas nesse ambiente são apartadas das presentes em ambiente de produção. Então, a **chave de integração**, **credenciais de acesso** não são as mesmas presente em ambiente real de utilização.
+  
+  Após, a criação de sua conta é necessário que nosso time interno **aprove a criação da sua loja** e **habilite a chave de integração** para sua visualização. Para isso, entre em contato com o time interno na qual foi estabelecido comunicação através do time comercial e peça a aprovação da sua loja para que você consiga visualizar sua chave de integração. [Clique aqui](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#462c2b70-7030-4123-9932-586913010790) para obter mais informações.
+  
+  Com a **chave de integração** e **loja habilitada** você consegue usufruir das funcionalidades para a realização dos testes abaixo (utilize os [Cartões de Teste](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#91012dcc-4ed4-4c89-bdb1-8a6508e3138c) para isso):
+  
+  | Testes Necessário | Retorno | Obrigatório |
+  | --- | --- | --- |
+  | Crie um **pagamento de captura não parcelado**. | Autorização Bem Sucedida | Sim |
+  | Crie um **pagamento de captura parcelado em n vezes**. | Autorização Bem Sucedida | Sim |
+  | Crie um **pagamento de pré-captura** e depois capture-o. | Autorização Bem Sucedida | Opcional. |
+  | Crie um **pagamento de captura negado** com motivo conforme demonstrado no retorno. | Autorização Negada por Cartão Expirado. | Sim |
+  | Crie um **pagamento de captura negado** com motivo conforme demonstrado no retorno. | Autorização Negada por Cartão Cancelado. | Sim |
+  | Crie um **pagamento de captura negado** com motivo conforme demonstrado no retorno. | Autorização Negada por Cartão Bloqueado. | Sim |
+  | Crie um **pagamento de captura negado** com motivo conforme demonstrado no retorno. | Autorização Não Autorizada. | Sim |
+  | Crie um **pagamento aprovado** e após isso **cancele-o**. | Cancelamento realizado com sucesso. | Opcional. |
+  | Crie um **pix** e depois receba via webhook a **aprovação do mesmo**. | Pago. | Opcional. |
+  
+  Se atente em utilizar os cartões de testes e realizar os testes adequadamente. Posteriormente a realização desse processo **solicite ao time interno de suporte** a homologação da sua empresa para cadastro no **ambiente de produção**. Após o cadastro realizado, você poderá usufruir de todo o ecossistema da plataforma em ambiente real e ideal para seu negócio.
+}

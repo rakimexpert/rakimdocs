@@ -1,0 +1,211 @@
+meta {
+  name: Criar Link de Pagamento
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/api/payment_links/create
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/payment_links/create
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 0,
+        "currency": "BRL",
+        "maxNumberOfInstallments": 0,
+        "maxInstallmentsNoInterest": 0,
+        "expiredLink": "2024-12-28",
+        "nameCheckout": "string",
+        "descriptionCheckout": "string",
+        "dueDateLink": "2024-12-28",
+        "interestRateVariable": 0,
+        "interestRateFixed": 0,
+        "redirectUrl": "string",
+        "customer": {
+          "name": "string",
+          "email": "string",
+          "mobile": "string",
+          "birthDate": "2024-12-28",
+          "documentNumber": "string",
+          "address": {
+            "zipcode": "string",
+            "street": "string",
+            "number": "string",
+            "complement": "string",
+            "district": "string",
+            "city": "string",
+            "state": "string",
+            "country": "BRA"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "string",
+            "merchantType": "PRIMARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 0
+          }
+        ],
+        "metadata": [
+          {
+            "key": "string",
+            "value": "string"
+          }
+        ],
+        "discountType": "\"PERCENTAGE\"",
+        "discount": 0
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "id": "b566309d-a420-4ff9-be44-a32a374c07f1",
+            "paymentUrl": "https://api.rakim.com.br/checkout/5d0028bb-7f8c-4b1e-8379-15aae8677c3d",
+            "type": "payment_links",
+            "amount": 1035,
+            "discount": 250,
+            "discountType": "AMOUNT",
+            "maxNumberOfInstallments": 1,
+            "currency": "BRL",
+            "status": "pending",
+            "nameCheckout": null,
+            "descriptionCheckout": null,
+            "redirectUrl": null,
+            "dueDateLink": null,
+            "expiredLink": null,
+            "interestRateVariable": 0,
+            "interestRateFixed": 0,
+            "createdAt": "2022-02-01 00:00:01",
+            "updatedAt": "2022-02-22 00:00:01",
+            "customer": {
+                "name": "Comprador Teste",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "documentNumber": "99999999999",
+                "birthDate": "1969-12-31",
+                "createdAt": "2022-02-22 00:00:01",
+                "updatedAt": "2022-02-22 00:00:01"
+            }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}app/api/payment_links/create
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 0,
+        "currency": "BRL",
+        "maxNumberOfInstallments": 0,
+        "maxInstallmentsNoInterest": 0,
+        "expiredLink": "2024-12-28",
+        "nameCheckout": "string",
+        "descriptionCheckout": "string",
+        "dueDateLink": "2024-12-28",
+        "interestRateVariable": 0,
+        "interestRateFixed": 0,
+        "redirectUrl": "string",
+        "customer": {
+          "name": "string",
+          "email": "string",
+          "mobile": "string",
+          "birthDate": "2024-12-28",
+          "documentNumber": "string",
+          "address": {
+            "zipcode": "string",
+            "street": "string",
+            "number": "string",
+            "complement": "string",
+            "district": "string",
+            "city": "string",
+            "state": "string",
+            "country": "BRA"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "string",
+            "merchantType": "PRIMARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 0
+          }
+        ],
+        "metadata": [
+          {
+            "key": "string",
+            "value": "string"
+          }
+        ],
+        "discountType": "\"PERCENTAGE\"",
+        "discount": 0
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token invalid"
+        }
+      '''
+    }
+  }
+}

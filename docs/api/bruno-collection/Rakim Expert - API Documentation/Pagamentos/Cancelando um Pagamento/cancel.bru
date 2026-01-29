@@ -1,0 +1,157 @@
+meta {
+  name: cancel
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales/:paymentId/cancel
+  body: none
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: https://api.rakim.com.br/app/payments/api/sales/:paymentId/cancel
+    method: POST
+    mode: none
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": 7,
+          "returnCode": "FF",
+          "returnMessage": "Sucesso",
+          "paymentId": "010000003811041456460000064215020000000000",
+          "authorizationCode": "",
+          "amount": 3990,
+          "fees": 260,
+          "liquid": 3730,
+          "acquirer": "adiq",
+          "releaseAt": "2021-11-04 12:35:47"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: POST
+    mode: none
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "__general__",
+          "message": "Transação capturada."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: POST
+    mode: none
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

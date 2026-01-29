@@ -1,0 +1,111 @@
+meta {
+  name: Solicitar Saque
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/api/bank/withdraw
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+body:json {
+  {
+      "amount":12.34,
+      "pixKey":"dc7a478j-196l-03fm-t6gh-4298er7845m2",
+      "webHookURL":"https://minhaURL.com.br/callback"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/bank/withdraw
+    method: GET
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+          "amount":12.34,
+          "pixKey":"dc7a478j-196l-03fm-t6gh-4298er7845m2",
+          "webHookURL":"https://minhaURL.com.br/callback"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "message": "Seu saque esta em processamento, aguarde", "Status": "Pendente"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}app/api/bank/withdraw
+    method: GET
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+          "amount":12.34,
+          "pixKey":"dc7a478j-196l-03fm-t6gh-4298er7845m2",
+          "webHookURL":"https://minhaURL.com.br/callback"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "message": "saldo insulficiente"
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,822 @@
+meta {
+  name: sales/splits
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales/splits
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales/splits
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "payment": {
+          "type": "credit",
+          "installments": 1,
+          "capture": true,
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiryMonth": "09",
+            "expiryYear": "2024",
+            "brand": "mastercard",
+            "cvv": "123"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          },
+          "shipping_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 3,
+            "returnCode": "0",
+            "returnMessage": "Sucesso",
+            "message": "SUCESSO",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "orderNumber": "6183f4ac7ad8d",
+            "onlineId": "HROJSF",
+            "type": "credit",
+            "installments": 1,
+            "brand": "mastercard",
+            "amount": 1035,
+            "fees": 86,
+            "liquid": 949,
+            "acquirer": "adiq",
+            "metadata": [
+                {
+                    "metadata_key": "key",
+                    "metadata_value": "value"
+                },
+                {
+                    "metadata_key": "key2",
+                    "metadata_value": "value2"
+                }
+            ],
+            "createdAt": "2021-11-04 11:56:50",
+            "expireAt": "2021-11-11 11:56:50",
+            "first4Digits": "5201",
+            "last4Digits": "5011",
+            "nsu": "61a7d95711f57",
+            "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                    "street": "Rua teste",
+                    "number": "1",
+                    "district": "Bairro teste",
+                    "complement": "Complemento teste",
+                    "zipcode": "99999999",
+                    "city": "São Paulo",
+                    "state": "SP",
+                    "country": "BRA"
+                }
+            },
+            "receivers": [
+                {
+                    "account": {
+                        "id": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+                        "name": "César E Rosângela Construções Me"
+                    },
+                    "merchantType": "SECONDARY",
+                    "type": "AMOUNT",
+                    "amount": {
+                        "total": 200,
+                        "fees": 0,
+                        "liquid": 200
+                    },
+                    "chargeFee": "false"
+                },
+                {
+                    "account": {
+                        "id": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+                        "name": "César E Rosângela Construções Me"
+                    },
+                    "merchantType": "SECONDARY",
+                    "type": "PERCENTAGE",
+                    "amount": {
+                        "total": 380,
+                        "fees": 0,
+                        "liquid": 380
+                    },
+                    "chargeFee": "false"
+                },
+                {
+                    "account": {
+                        "id": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+                        "name": "Antonio e Mariana Financeira Ltda"
+                    },
+                    "merchantType": "PRIMARY",
+                    "type": "PERCENTAGE",
+                    "amount": {
+                        "total": 1035,
+                        "fees": 666,
+                        "liquid": 369
+                    },
+                    "chargeFee": "true"
+                }
+            ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales/splits
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "payment": {
+          "type": "credit",
+          "installments": 1,
+          "capture": true,
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiryMonth": "09",
+            "expiryYear": "2024",
+            "brand": "mastercard",
+            "cvv": "123"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          },
+          "shipping_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Bad Request
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "string",
+          "message": "string"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizado
+  
+  request: {
+    url: {{URL}}payments/api/sales/splits
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "payment": {
+          "type": "credit",
+          "installments": 1,
+          "capture": true,
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiryMonth": "09",
+            "expiryYear": "2024",
+            "brand": "mastercard",
+            "cvv": "123"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          },
+          "shipping_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales/splits
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "payment": {
+          "type": "credit",
+          "installments": 1,
+          "capture": true,
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiryMonth": "09",
+            "expiryYear": "2024",
+            "brand": "mastercard",
+            "cvv": "123"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billing_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          },
+          "shipping_address": {
+              "street": "Rua Rio Paranapanema",
+              "number": "10",
+              "disctrict": "Jardim Jóckei",
+              "complement": "Club A",
+              "city": "São Carlos",
+              "state": "SP",
+              "zipcode": "13565050",
+              "country": "Brasil"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "amount": [
+            "The amount field is required."
+          ],
+          "payment.type": [
+            "The payment.type field is required."
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Internal Server Error
+  
+  request: {
+    url: {{URL}}payments/api/sales/splits
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "payment": {
+          "type": "credit",
+          "installments": 1,
+          "capture": true,
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiryMonth": "09",
+            "expiryYear": "2024",
+            "brand": "mastercard",
+            "cvv": "123"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billingAddress": {
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "zipcode": "99999999",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Internal Server Error
+      text: 500
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "error": "Server Error"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Sucesso com 3DS
+  
+  request: {
+    url: {{URL}}payments/api/sales/splits
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "payment": {
+          "type": "credit",
+          "installments": 1,
+          "capture": true,
+          "softdescriptor": "PAG*TESTE",
+          "card": {
+            "holder": "TESTE HOLDER",
+            "number": "5201561050025011",
+            "expiryMonth": "09",
+            "expiryYear": "2024",
+            "brand": "mastercard",
+            "cvv": "123"
+          }
+        },
+        "customer": {
+          "name": "Comprador Teste",
+          "document": "99999999999",
+          "email": "example@test.com",
+          "phone": "11999999999",
+          "birthdate": "1969-12-31",
+          "billingAddress": {
+            "street": "Rua teste",
+            "number": "1",
+            "district": "Bairro teste",
+            "complement": "Complemento teste",
+            "zipcode": "99999999",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "BRA"
+          }
+        },
+        "splits": [
+          {
+            "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+            "merchantType": "PRIMARY",
+            "chargeFee": true,
+            "type": "PERCENTAGE",
+            "amountSplit": 6000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+            "merchantType": "SECONDARY",
+            "type": "PERCENTAGE",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 4000
+          },
+          {
+            "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+            "merchantType": "SECONDARY",
+            "type": "AMOUNT",
+            "chargeFee": false,
+            "discountGrossAmount": false,
+            "amountSplit": 200
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": 3,
+            "returnCode": "0",
+            "returnMessage": "Sucesso",
+            "message": "SUCESSO",
+            "paymentId": "010000003811041456460000064215020000000000",
+            "authorizationCode": "007019",
+            "orderNumber": "6183f4ac7ad8d",
+            "onlineId": "HROJSF",
+            "type": "credit",
+            "installments": 1,
+            "brand": "mastercard",
+            "amount": 1035,
+            "fees": 86,
+            "liquid": 949,
+            "acquirer": "adiq",
+            "authenticationUrl":"https://api-expert.rakim.test/service/v2/pagbank/challenge/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWQiOiI4MTAyNTg5IiwibmJmIjoxNzE1MDkzNjE5LCJpYXQiOjE3MTUwOTM2MTksImV4cCI6MTcxNTA5NDIxOX0.iylta-n6hpJ59xWjW4wdAfiMwYFospL66aovL8UltmA",
+            "metadata": [
+                {
+                    "metadata_key": "key",
+                    "metadata_value": "value"
+                },
+                {
+                    "metadata_key": "key2",
+                    "metadata_value": "value2"
+                }
+            ],
+            "createdAt": "2021-11-04 11:56:50",
+            "expireAt": "2021-11-11 11:56:50",
+            "first4Digits": "5201",
+            "last4Digits": "5011",
+            "nsu": "61a7d95711f57",
+            "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                    "street": "Rua teste",
+                    "number": "1",
+                    "district": "Bairro teste",
+                    "complement": "Complemento teste",
+                    "zipcode": "99999999",
+                    "city": "São Paulo",
+                    "state": "SP",
+                    "country": "BRA"
+                }
+            },
+            "receivers": [
+                {
+                    "account": {
+                        "id": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+                        "name": "César E Rosângela Construções Me"
+                    },
+                    "merchantType": "SECONDARY",
+                    "type": "AMOUNT",
+                    "amount": {
+                        "total": 200,
+                        "fees": 0,
+                        "liquid": 200
+                    },
+                    "chargeFee": "false"
+                },
+                {
+                    "account": {
+                        "id": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+                        "name": "César E Rosângela Construções Me"
+                    },
+                    "merchantType": "SECONDARY",
+                    "type": "PERCENTAGE",
+                    "amount": {
+                        "total": 380,
+                        "fees": 0,
+                        "liquid": 380
+                    },
+                    "chargeFee": "false"
+                },
+                {
+                    "account": {
+                        "id": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+                        "name": "Antonio e Mariana Financeira Ltda"
+                    },
+                    "merchantType": "PRIMARY",
+                    "type": "PERCENTAGE",
+                    "amount": {
+                        "total": 1035,
+                        "fees": 666,
+                        "liquid": 369
+                    },
+                    "chargeFee": "true"
+                }
+            ]
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Upload do Logo para Link de Pagamento
+  seq: 3
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Este endpoint permite o upload de um logo personalizado para um Link de Pagamento específico, identificado pelo seu ID. A imagem enviada será armazenada e associada ao Link de Pagamento. Se for necessário alterar a imagem do logo do Link de Pagamento, é necessário fazer a requisição novamente.
+  
+  ## Body Parameters
+  
+  ### Geral
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **image** | file | Arquivo de imagem que será utilizado como logo para o Link de Pagamento. A imagem precisa atender aos seguintes requisitos:  <br>  <br>\- Extensões aceitas: `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`  <br>  <br>\- Formato: Imagem `JPG`/`PNG`/`GIF`/`SVG`  <br>  <br>\- Tamanho máximo do arquivo: `2Mb`. | Sim | \- |
+  
+  ## Path Params
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **id** | string | Identificador único do link de pagamento ao qual o logo será associado. | Sim | \- |
+}

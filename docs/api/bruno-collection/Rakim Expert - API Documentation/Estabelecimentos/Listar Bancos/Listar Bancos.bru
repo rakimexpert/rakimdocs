@@ -1,0 +1,106 @@
+meta {
+  name: Listar Bancos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}app/api/banks
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/cnae
+    method: POST
+    mode: json
+    params:query: {
+      ~type: 2
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "representative": {
+          "name": "Lúcia Benedita Galvão",
+          "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+          "mobile": "11997098755",
+          "cpf": "99999999999",
+          "birthDate": "1956-01-03"
+        },
+        "address": {
+          "zipcode": "13310600",
+          "street": "Avenida Caetano Ruggieri",
+          "number": 259,
+          "district": "Parque das Rosas",
+          "city": "Itu",
+          "state": "SP"
+        },
+        "contact": {
+          "name": "Lúcia Benedita Galvão",
+          "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+          "mobile": "11997098755"
+        },
+        "bankAccount": {
+          "bankAccountTypeId": 1,
+          "bankId": 120,
+          "agency": "1202",
+          "account": "1066888",
+          "digitAccount": "8",
+          "holderTypeId": "2"
+        },
+        "commercialName": "Bruno e Ana Consultoria Financeira ME",
+        "type": 2,
+        "typeClass": "STO",
+        "socialReason": "Bruno e Ana Consultoria Financeira ME",
+        "documentNumber": "80017668000180",
+        "cnaeId": 656,
+        "foundationDate": "2019-01-05",
+        "companyFormationCode": "04",
+        "automaticAntecipation": true,
+        "isTransactionsPix": true
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "bankId": 1,
+            "code": "356",
+            "name": "BANCO REAL S.A.",
+            "ispb": "00000000",
+            "active": "A"
+          }
+        ]
+      '''
+    }
+  }
+}

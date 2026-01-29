@@ -1,0 +1,36 @@
+meta {
+  name: Introdução
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Essa é a sessão de introdução a **API de Antecipação** oferecida pela nossa plataforma. Com ela você pode manter controle sobre as antecipações disponíveis pelo seu estabelecimento, gerenciar a antecipação automática ou não dos recebíveis e poder solicitar também a antecipação de um recebível futuro.
+  
+  Considere como **antecipação** o processo de liquidação antecipado de um recebível. Por exemplo, caso você seja um lojista e realize um pagamento de R$100,00 **hoje**, teoricamente, você receberia o valor líquido desse pagamento, após trinta dias da captura do pagamento (o que chamamos de pagamento D+30), entretanto, o recebimento líquido dessa transação (chamado de recebível) pode ser antecipado e você pode receber após um dia da captura do pagamento (o que chamamos de pagamento antecipado ou D+1).
+  
+  Assim, a antecipação trata-se de um modelo em que você recebe seus pagamentos um dia após a captura do pagamento. Você pode atualizar o modelo de antecipação para automática através do endpoint de [Atualização de Antecipação Automática para o Estabelecimento](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#f786faca-c234-43a5-812d-2cfee91d4ce1), ou, solicitar manualmente uma antecipaçã caso você não trabalhe no modelo automatizado através do endpoint de [Solicitação de Antecipação](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#3e06f757-dc38-4bfb-bbb9-0e389548f5fa).
+  
+  ## Como posso gerenciar minhas antecipações e visualizar minhas taxas?
+  
+  A seguir há uma pequena demonstração de como você consegue **encontrar e visualizar sua taxa de antecipação manual** e como **solicitar e visualizar sua antecipação de recebível** através da interface web do administrador da plataforma.
+  
+  <img src="https://files.readme.io/9a63fc2-Frame_2.png" alt="Frame 2">
+  
+  Para acessar essa área acesse o link, [clicando aqui](https://api.rakim.com.br/dashboard/anticipations). Vale ressaltar, que essa é a **taxa de antecipação manual**, na qual é diferente da **taxa de antecipação automática**. Veja a seguir a diferença entre as duas:
+  
+  ### Taxa de Antecipação Manual
+  
+  Trata-se da taxa aplicada quando a loja realiza uma antecipação momentânea de alguns recebíveis. Essa taxa é aplicada quando a loja não utiliza o modelo de antecipação automática e precisa realizar uma antecipação repentina de algum recebível. Nesse modelo, apenas os **recebíveis selecionados serão antecipados**.
+  
+  ### Taxa de Antecipação Automática
+  
+  Trata-se da taxa aplicada para todos pagamentos aprovados após a ativação consequente da aprovação da solicitação de antecipação automática pela loja. Nesse modelo, **todos os pagamentos criados após a ativação da antecipação automática terão seus recebíveis antecipados**. Veja a seguir como encontrar sua taxa de antecipação automática:
+  
+  <img src="https://files.readme.io/9a63fc2-Frame_2.png" alt="Frame 2">
+  
+  Para acessar essa área acesse o link, [clicando aqui](https://api.rakim.com.br/dashboard/myrates).
+}

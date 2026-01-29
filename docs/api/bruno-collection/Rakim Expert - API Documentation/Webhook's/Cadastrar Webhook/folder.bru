@@ -1,0 +1,19 @@
+meta {
+  name: Cadastrar Webhook
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Esse é o endpoint destinado ao cadastro de URL para ser notificado os pagamentos e as cobranças pix **de cada estabelecimento**. Dessa forma, é necessário que você cadastre e configure o webhook para cada estabelecimento.
+  
+  ## Body Params
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | url | string | URL na qual o webhook será enviado. | Sim |  |
+  | apiAccessKey | string | Opcional. Cadastrar uma chave de segurança para autenticar e validar a assinatura enviada na webhook no header Api-Access-Key. | Não |  |
+}

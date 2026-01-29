@@ -1,0 +1,365 @@
+meta {
+  name: Casos de Uso
+  seq: 15
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Veja a seguir alguns casos de uso da API de Pagamentos e seus diferentes fluxos de liquidação e processamento.
+  
+  <h2>Criação de Pagamento Autorizado</h2>
+  
+  A criação de pagamento autorizado, também chamado de _captura de pagamento_ consiste no processamento e efetivação do pagamento no momento do envio da requisição.
+  
+  Esse é o fluxo mais utilizado nas aplicações-cliente do mercado.
+  
+  Para você criar um _**pagamento autorizado**_ será necessário utilizar o parâmetro `capture` como `true` (verdadeiro).
+  
+  A seguir veja um exemplo de requisição para captura de pagamento:
+  
+  ``` json
+  {
+    "amount": 1035,
+    "payment": {
+      "type": "credit",
+      "installments": 1,
+      "capture": true,
+      "softdescriptor": "PAG*TESTE",
+      "card": {
+        "holder": "TESTE HOLDER",
+        "number": "5201561050025011",
+        "expiry_month": "09",
+        "expiry_year": "2024",
+        "brand": "mastercard",
+        "cvv": "123"
+      }
+    },
+    "customer": {
+      "name": "Comprador Teste",
+      "document": "99999999999",
+      "email": "example@test.com",
+      "phone": "11999999999",
+      "birthdate": "1969-12-31",
+      "billing_address": {
+        "street": "Rua teste",
+        "number": "1",
+        "district": "Bairro teste",
+        "complement": "Complemento teste",
+        "zipcode": "99999999",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "BRA"
+      }
+    }
+  }
+  
+   ```
+  
+  <h2>Criação de Pagamento Pré-Autorizado</h2>
+  
+  A criação de pagamento pré-autorizado, também chamado de pré-captura de pagamento, consiste no processamento prévio do pagamento, reserva do dinheiro do cliente e efetivação **parcial ou completa** do pagamento posterior a pré-captura do pagamento.
+  
+  Veja a seguir uma esquematização da pré-captura de pagamento:
+  
+  <img src="https://files.readme.io/19cf938-image.png" alt="Esquematização do Fluxo de Processo para essa modalidade de pagamento">
+  
+  _Esquematização da Pré-Captura de Pagamento_
+  
+  Geralmente nessa modalidade de pagamento são utilizados para operações que exigem **garantia do pagamento** ou a **segurança do pagamento**, como hotelaria e aluguel de carros.
+  
+  **Importante**: A pré-captura será **cancelada automaticamente** caso você não realize a captura em até **5 dias** posterior a criação do pagamento pré-autorizado.
+  
+  A seguir veja um exemplo de requisição para pré-captura de pagamento:
+  
+  ``` json
+  {
+    "amount": 1035,
+    "payment": {
+      "type": "credit",
+      "installments": 1,
+      "capture": false,
+      "softdescriptor": "PAG*TESTE",
+      "card": {
+        "vault": "2beaeb98-391d-41d9-8685-61464f3c0789"
+      }
+    },
+    "customer": {
+      "name": "Comprador Teste",
+      "document": "99999999999",
+      "email": "example@test.com",
+      "phone": "11999999999",
+      "birthdate": "1969-12-31",
+      "billing_address": {
+        "street": "Rua teste",
+        "number": "1",
+        "district": "Bairro teste",
+        "complement": "Complemento teste",
+        "zipcode": "99999999",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "BRA"
+      }
+    }
+  }
+  
+   ```
+  
+  OBS: Atente-se ao _**valor capturado**_, pois ele não pode ser maior que o _**valor pré-capturado original**_ na criação do pagamento.
+  
+  <h2>Criar Pagamento com Cofre de Cartão</h2>
+  
+  A criação de pagamentos com cofre de cartão consiste na utilização de um _**TOKEM**_ do Cartão armazenado no **cofre** para realizar uma **pré-autorização** ou **autorização** de pagamentos sem o envio dos dados do cartão abertos na requisição.
+  
+  Esse método de criação de pagamentos é seguro e evita que os dados do cartão sejam capturados indevidamente na sua aplicação. Também pode ser implementado a funcionalidade COMPRA COM UM CLIQUE, onde você armazena apenas o TOKEM do cartão na sua aplicação.
+  
+  Entretanto, para a criação do pagamento utilizando essa modalidade é necessário realizar a **tokenização prévia dos dados cartão** através do endpoint de [Criação de Cofre de Cartão](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#ae31bcae-6098-444b-a519-f29700a47e02).
+  
+  A seguir veja um exemplo de requisição para captura de pagamento com cofre de cartão:
+  
+  ``` json
+  {
+    "amount": 1035,
+    "payment": {
+      "type": "credit",
+      "installments": 1,
+      "capture": true,
+      "softdescriptor": "PAG*TESTE",
+      "card": {
+        "vault": "2beaeb98-391d-41d9-8685-61464f3c0789"
+      }
+    },
+    "customer": {
+      "name": "Comprador Teste",
+      "document": "99999999999",
+      "email": "example@test.com",
+      "phone": "11999999999",
+      "birthdate": "1969-12-31",
+      "billing_address": {
+        "street": "Rua teste",
+        "number": "1",
+        "district": "Bairro teste",
+        "complement": "Complemento teste",
+        "zipcode": "99999999",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "BRA"
+      }
+    }
+  }
+  
+   ```
+  
+  OBS: Você pode utilizar o TOKEM do Cartão para pagamentos de _**pré-captudos e/ou capturados.**_
+  
+  <h2>Criando Pagamento com Split</h2>
+  
+  A criação de pagamento com o split consiste no processo de indicação dos Recebedores finais, alterando a **liquidação.**
+  
+  O fluxo de aprovação da transação não está vinculado no fluxo de liquidação. O sistema captura a transação no Recebedor `primary` e promove a liquidação para os demais participantes da transação `secondary`
+  
+  Você pode utilizar um pagamento com split tanto em uma pré-autorização ou na autorização.
+  
+  Essa modalidade de pagamento é utilizada quando um segundo recebedor (`secondary`) recebe uma parte da transação como Comissão de venda ou Garantia por exemplo.
+  
+  Por exemplo, ao fazer a venda de um produto online, você pode dividir uma parte do pagamento para a transportadora do pedido e uma parte para a fornecedora do pedido, conseguindo assim, alterar o fluxo de liquidação no momento da criação do pagamento.
+  
+  Esta opção tem uma gama enorme de aplicabilidade, dependendo do fluxo da sua aplicação.
+  
+  A seguir, esquematização do fluxo de processo realizado:
+  
+  <img src="https://files.readme.io/a02d17c-Diagrama_sem_nome_2.jpg" alt="Fluxo%20do%20Split%20de%20Pagamento">
+  
+  Obs: A transação com Split de Pagamento só pode ser realizada para Lojas cadastradas na plataforma RAKIM, desde que essas lojas estajam sob sua gestão ou que você mesmo as tenha criado no ending point [Criação de Lojas](https://rakimdevelopers.postman.co/workspace/ee0b02ef-ba3d-4dca-8b4d-61c6a6496517/folder/40662984-4d6c5066-1fac-41ae-8dd7-140a862a61aa?action=share&source=copy-link&creator=40662984&ctx=documentation)
+  
+  <h2>Considerações do Split de Pagamento</h2>
+  
+  Atente-se a estas considerações quando na criação do pagamento com split:
+  
+  - Considere como `PRIMARY`, o participante primário onde a transação será registrada como origem do pagamento;
+      
+  - Considere como `SECONDARY`, participantes secundários do split do pagamento que participam indiretamente da transação;
+      
+  - Só é possível criar um split com um unico `primary` - **participante primário**;
+      
+  - O participante primário **não pode receber menos que 1% do pagamento**;
+      
+  - A soma dos **valores divididos no split não pode ser diferente do valor líquido da transação**;
+      
+  
+  A seguir veja um exemplo de requisição para criação de pagamentos com split de pagamento:
+  
+  ``` json
+  {
+    "amount": 1035,
+    "payment": {
+      "type": "credit",
+      "installments": 1,
+      "capture": true,
+      "card": {
+        "holder": "TESTE HOLDER",
+        "number": "5201561050025011",
+        "expiryMonth": "09",
+        "expiryYear": "2024",
+        "brand": "mastercard",
+        "cvv": "123"
+      }
+    },
+    "customer": {
+      "name": "Comprador Teste",
+      "document": "99999999999",
+      "email": "example@test.com",
+      "phone": "11999999999",
+      "birthdate": "1969-12-31",
+      "billingAddress": {
+        "street": "Rua teste",
+        "number": "1",
+        "district": "Bairro teste",
+        "complement": "Complemento teste",
+        "zipcode": "99999999",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "BRA"
+      }
+    },
+    "splits": [
+      {
+        "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+        "merchantType": "PRIMARY",
+        "chargeFee": true,
+        "type": "PERCENTAGE",
+        "amountSplit": 6000
+      },
+      {
+        "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+        "merchantType": "SECONDARY",
+        "type": "PERCENTAGE",
+        "chargeFee": false,
+        "discountGrossAmount": false,
+        "amountSplit": 4000
+      },
+      {
+        "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+        "merchantType": "SECONDARY",
+        "type": "AMOUNT",
+        "chargeFee": false,
+        "discountGrossAmount": false,
+        "amountSplit": 200
+      }
+    ]
+  }
+  
+   ```
+  
+  <h2>Criação de Pagamento com Split Tardio</h2>
+  
+  A criação de pagamento com o split tardio consiste no processo de indicação dos Recebedores finais, alterando a **liquidação.**
+  
+  O fluxo de aprovação da transação não está vinculado no fluxo de liquidação. O sistema captura a transação no Recebedor `primary` e promove a liquidação para os demais participantes da transação `secondary`
+  
+  Você pode utilizar um pagamento com split tanto em uma pré-autorização ou na autorização.
+  
+  A diferença está na possibilidade de indicar os participantes `secondary` posteriormente a captura da transação.
+  
+  Esse processo é amplamente utilizado na venda de pacotes turisticos, onde o operador vende um pacote com multiplos fornecedores, mas não sabe quem prestará o serviço final. A informação só chega ao opertador _**DEPOIS**_ do serviço prestado. Dessa forma o sistema captura a transação em nome do Operador Turistico e alguns dias depois promove a informação dos prestadores (`secondary`), liquidando a transação com a parte que cabe a cada prestador do serviço.
+  
+  Veja a seguir o fluxo de processo:
+  
+  <img src="https://files.readme.io/0000504-Diagrama_sem_nome_3.jpg" alt="Fluxo%20do%20Split%20Tardio">
+  
+  _Fluxo do Split Tardio do Pagamento_
+  
+  Sendo assim, observando o esquema, percebe-se a necessidade de realizar a [<b>requisição de criação do pagamento</b>](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#47116bd0-cb76-45f9-8598-2ac3197d8887) e a [<b>requisição de ativação do split tardio</b>](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#89aa9e42-85fa-4247-9de4-52118775f7dc).
+  
+  Caso você crie um pagamento como o _**Split Tardio**_ e por _**NÃO**_ defina posteriormente os participantes `secondary` através do endpoint de [Ativação do Split Tardio](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#89aa9e42-85fa-4247-9de4-52118775f7dc) , a liquidação da transação **não será efetivada até que o estabelecimento onde a transação ocorreu** **`primary`** **promova a informação dos participantes** **`secondary`**
+  
+  A seguir veja um exemplo de requisição para criação de pagamentos com split de pagamento tardio:
+  
+  ``` json
+  {
+    "amount": 1035,
+    "payment": {
+      "type": "credit",
+      "installments": 1,
+      "capture": true,
+      "delayed_split": true,
+      "softdescriptor": "PAG*TESTE",
+      "card": {
+        "holder": "TESTE HOLDER",
+        "number": "5201561050025011",
+        "expiry_month": "09",
+        "expiry_year": "2024",
+        "brand": "mastercard",
+        "cvv": "123"
+      }
+    },
+    "customer": {
+      "name": "Comprador Teste",
+      "document": "99999999999",
+      "email": "example@test.com",
+      "phone": "11999999999",
+      "birthdate": "1969-12-31",
+      "billing_address": {
+        "street": "Rua teste",
+        "number": "1",
+        "district": "Bairro teste",
+        "complement": "Complemento teste",
+        "zipcode": "99999999",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "BRA"
+      }
+    }
+  }
+  
+   ```
+  
+  Após a criação do pagamento é necessário a ativação do split de pagamento, veja a seguir um exemplo de requisição:
+  
+  ``` json
+  {
+    "orderId": "6183f4ac7ad8d",
+    "splits": [
+      {
+        "recipientToken": "9b7ba208a0e54094b9c06ef479acf4b29ddc1d3a",
+        "merchantType": "PRIMARY",
+        "chargeFee": true,
+        "type": "PERCENTAGE",
+        "amountSplit": 6000
+      },
+      {
+        "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d651",
+        "merchantType": "SECONDARY",
+        "type": "PERCENTAGE",
+        "chargeFee": false,
+        "discountGrossAmount": false,
+        "amountSplit": 4000
+      },
+      {
+        "recipientToken": "4a723333747e4aa3ac10f12fa65af89e5057d633",
+        "merchantType": "SECONDARY",
+        "type": "AMOUNT",
+        "chargeFee": false,
+        "discountGrossAmount": false,
+        "amountSplit": 200
+      }
+    ]
+  }
+  
+   ```
+  
+  Vale ressaltar que devem ser consideradas algumas observações:
+  
+  - Caso a soma dos percentuais dos participantes do split tardio for maior que 100%, a ativação do split tardio não será realizada e continuará pendente de ativação.
+      
+  - Caso a soma dos percentuais dos participantes do split tardio for menor que 100%, a ativação do split tardio será realizada e o participante primário receberá o resto percentual que sobrou do split criado.
+      
+  - Caso a taxa cobrada da plataforma pela autorização do pagamento for em cima do líquido do participante e o desconto dela sobre o participante resultar em um valor líquido a receber negativo, a ativação do split tardio não será realizada e continuará pendente de ativação.
+      
+  - Caso a taxa cobrada da plataforma não for informada para ser paga por nenhum dos participantes através do parâmetro `chargeFee`, ela será cobrada pelo participante primário da ativação do split.
+      
+  
+  Além de considerar os casos acima, reveja as **Considerações do Split do Pagamento** para se integrar ao endpoint de ativação do split.
+}

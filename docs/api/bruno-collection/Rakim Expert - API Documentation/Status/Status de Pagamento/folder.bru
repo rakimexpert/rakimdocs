@@ -1,0 +1,26 @@
+meta {
+  name: Status de Pagamento
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Os pagamentos podem ter diferentes status ao longo do processo. Os status abaixo são aplicáveis tanto para transações via **PIX** quanto **Cartão de Crédito**:
+  
+  | Código | Status de Transação | Meios de Pagamento | Descrição |
+  | --- | --- | --- | --- |
+  | **1** | Pendente | Cartão de crédito e Pix | Pagamento está aguardando uma ação por parte do pagador.  <br>\- `PIX`: A transação foi gerada e está aguardando o cliente efetuar o pagamento.  <br>\- `Cartão de Crédito`: O valor foi reservado no cartão do portador, mas a captura ainda precisa ser realizada. A captura garante o depósito do valor na conta e, por padrão, pode ser efetuada até 7 dias após a autorização. |
+  | **2** | Cancelado | Cartão de crédito e Pix | Pagamento cancelado.  <br>\- `PIX`: Pagamento foi cancelado porque o cliente não realizou o pagamento dentro do prazo e o QR Code expirou.  <br>\- `Cartão de Crédito`: Pagamento cancelado pela loja no mesmo dia ou não realizou a captura dentro do prazo. |
+  | **3** | Pago | Cartão de crédito e Pix | Pagamento confirmado e aprovado. |
+  | **4** | Aguardando reembolso | Cartão de crédito | Pagamento aguardando reembolso. |
+  | **5** | Em processamento | Cartão de crédito | Processando o pagamento. |
+  | **6** | Reembolsado | Cartão de crédito e Pix | Pagamento foi reembolsado. |
+  | **7** | Negado | Cartão de crédito | Pagamento não autorizado pelo responsável do meio de pagamento. |
+  | **8** | Chargeback | Cartão de crédito | Pagamento foi estornado pela instituição financeira devido a uma contestação feita pelo portador do cartão ou cliente. |
+  | **9** | Split manual | Cartão de crédito | Pagamento aguardando divisão dos valores entre os recebedores. |
+  | **10** | Fraude | Cartão de crédito | Pagamento marcado para análise manual por suspeita de fraude. |
+  | **11** | MED (Mecanismo Especial de Devolução do PIX) | Pix | Pagamento ocorreu um Mecanismo Especial de Devolução (MED), utilizado quando o cliente contesta uma transação fraudulenta ou realizada indevidamente. |
+}

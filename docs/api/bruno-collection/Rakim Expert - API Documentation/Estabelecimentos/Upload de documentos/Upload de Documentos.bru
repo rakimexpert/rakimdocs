@@ -1,0 +1,114 @@
+meta {
+  name: Upload de Documentos
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL_PRODUCTION}}/app/api/companies/upload-document/:companyid/type/:type_document
+  body: multipartForm
+  auth: inherit
+}
+
+params:path {
+  companyid: 
+  type_document: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+body:multipart-form {
+  document: @file()
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL_PRODUCTION}}/app/api/companies/upload-document/:companyid/type/:type_document
+    method: POST
+    mode: multipartForm
+    params:path: {
+      companyid: 23
+      type_document: proof_of_address
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:multipart-form: {
+      document: @file(/home/tothus/Imagens/proof_of_address.pdf)
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Created
+      text: 201
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "message": "Você fez upload do documento com sucesso!"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na requisição
+  
+  request: {
+    url: {{URL_PRODUCTION}}/app/api/companies/upload-document/:companyid/type/:type_document
+    method: POST
+    mode: multipartForm
+    params:path: {
+      companyid: 23
+      type_document: proof_of_address
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:multipart-form: {
+      document: @file(/home/tothus/Imagens/proof_of_address.pdf)
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Created
+      text: 201
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "message": "Ocorreu um erro ao fazer o upload do documento"
+        }
+      '''
+    }
+  }
+}

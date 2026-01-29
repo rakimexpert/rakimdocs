@@ -1,0 +1,235 @@
+meta {
+  name: Devolução pix
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}payments/api/sales/pix/:paymentId/returns
+  body: none
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ### Parameters
+  
+  | Nome       | Tipo   | Descrição                                | Required | Default |
+  |------------|--------|------------------------------------------|----------|---------|
+  | paymentId  | string | Identificador único do pagamento.        | Sim      |         |
+  
+  ---
+  
+  ### ReturnPix
+  
+  | **Nome** | **Tipo** | **Descrição** | **Obrigatoriedade** | **Default** |
+  | --- | --- | --- | --- | --- |
+  | `amount` | string | Valor da cobrança em centavos, sem vírgula e ponto. (Max 9999999999). Exemplo: R$ 10,35 = 1035. | Sim |  |
+  | `returnReasonCode` | string | Código contendo o motivo de devolução. Valores possíveis:  <br>  <br>MD06 - Devolução de pagamento instantâneo solicitado pelo usuário recebedor.  <br>  <br>FR01 - Devolução de pagamento instantâneo motivada por fundada suspeita de fraude.  <br>  <br>BE08 - Devolução de pagamento iniciada pelo participante do usuário recebedor. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId/returns
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "returnReasonCode": "FR01"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": 4,
+          "returnCode": "0",
+          "returnMessage": "Sucesso",
+          "paymentId": "0C12C9F1-AE8E-2E7B-1725-448EAFCD4FD1",
+          "orderNumber": "304fb53a-379a-4e67-82c6-0a779410958d",
+          "type": "pix",
+          "amount": 1035,
+          "releaseAt": "2022-05-23 12:59:05"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId/returns
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "amount": 1035,
+        "returnReasonCode": "FR01"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Bad Request
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "string",
+          "message": "string"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId/returns
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "amount": [
+            "The amount field is required."
+          ],
+          "returnReasonCode": [
+            "The return reason code field is required."
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizado
+  
+  request: {
+    url: {{URL}}payments/api/sales/pix/:paymentId/returns
+    method: POST
+    mode: json
+    params:path: {
+      paymentId: 
+    }
+  
+    headers: {
+      Content-Type: application/json
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "amount": [
+          "The amount field is required."
+        ],
+        "returnReasonCode": [
+          "The return reason code field is required."
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

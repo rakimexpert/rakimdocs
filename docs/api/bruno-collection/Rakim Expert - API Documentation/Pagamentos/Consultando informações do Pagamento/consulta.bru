@@ -1,0 +1,180 @@
+meta {
+  name: consulta
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}payments/api/sales/:paymentId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  paymentId: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: https://api.rakim.com.br/app/payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: none
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": 3,
+          "returnCode": "0",
+          "returnMessage": "Sucesso",
+          "paymentId": "010000003811041456460000064215020000000000",
+          "authorizationCode": "007019",
+          "orderNumber": "6183f4ac7ad8d",
+          "type": "credit",
+          "installments": 1,
+          "brand": "mastercard",
+          "amount": 3990,
+          "fees": 260,
+          "liquid": 3730,
+          "acquirer": "adiq",
+          "createdAt": "2021-11-04 11:56:50",
+          "nsu": "61a7d95711f57",
+          "first4Digits": "5201",
+          "last4Digits": "5011",
+          "customer": {
+            "name": "Comprador Teste",
+            "document": "99999999999",
+            "email": "example@test.com",
+            "phone": "11999999999",
+            "birthDate": "1969-12-31",
+            "billingAddress": {
+              "street": "Rua teste",
+              "number": "1",
+              "complement": "Complemento teste",
+              "district": "Bairro teste",
+              "zipcode": "99999999",
+              "city": "São Paulo",
+              "state": "SP",
+              "country": "BRA"
+            }
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Encontrada
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: none
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Not Found
+      text: 404
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Transaction not found"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales/:paymentId/cancel
+    method: GET
+    mode: none
+    params:path: {
+      paymentId: 010000003811041456460000064215020000000000
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}

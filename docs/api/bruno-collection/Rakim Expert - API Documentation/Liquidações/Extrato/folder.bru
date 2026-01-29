@@ -1,0 +1,22 @@
+meta {
+  name: Extrato
+  seq: 3
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Endpoint para consulta de liquidações realizadas para uma loja.
+  
+  - Se você não informar na query da URL duas datas (inicial e final) retornamos apenas as liquidações do dia corrente.
+      
+  
+  ## Parâmetros da Query da URL (opcionais)
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **initialDate** | date | Data inicial da consulta. | Não | \- |
+  | **finalDate** | date | Data final da consulta. | Não | \- |
+}

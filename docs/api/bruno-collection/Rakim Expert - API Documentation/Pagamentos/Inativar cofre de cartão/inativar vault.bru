@@ -1,0 +1,137 @@
+meta {
+  name: inativar vault
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{URL}}payments/api/vaults/cards/:numberToken
+  body: none
+  auth: inherit
+}
+
+params:path {
+  numberToken: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/vaults/cards/:numberToken
+    method: PUT
+    mode: json
+    params:path: {
+      numberToken: 2beaeb98-391d-41d9-8685-61464f3c0789
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "message": "Cofre inativado"
+          }
+        ]
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/vaults/cards/:numberToken
+    method: PUT
+    mode: json
+    params:path: {
+      numberToken: 2beaeb98-391d-41d9-8685-61464f3c0789
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token invalid"
+        }
+      '''
+    }
+  }
+}

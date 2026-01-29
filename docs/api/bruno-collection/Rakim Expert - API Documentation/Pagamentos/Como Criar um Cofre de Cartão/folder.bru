@@ -1,0 +1,29 @@
+meta {
+  name: Como Criar um Cofre de Cartão
+  seq: 8
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Neste endpoint você pode criar um _**cofre de cartão**_ para armazenar os dados do cartão de forma criptografada. O cofre é associado a Loja específica que é autentidada na API pelo **Tokem da Loja** e pode receber outros cartões de compradores diferentes.
+  
+  O _**Tokem do cartão**_ pode ser utilizado para Pagamentos com um clique posteriormente.
+  
+  Para mais informações [clique aqui](https://documenter.getpostman.com/view/40662984/2sAYJ6Bz2t#22600e87-7b71-48f5-9eae-561c8945ecb6).
+  
+  ### VaultRequest
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | customerName | string | Nome do cliente pertencente ao cartão. | Sim |  |
+  | documentNumber | string | Número do documento do cliente pertencente ao cartão. | Sim |  |
+  | cardNumber | string | Número do cartão. | Sim |  |
+  | cardHolderName | string | Nome do portador do cartão impresso no cartão. | Sim |  |
+  | expirationMonth | string | Mês de expiração do cartão com dois dígitos. | Sim |  |
+  | expirationYear | string | Ano de expiração do cartão com quatro dígitos. | Sim |  |
+  | securityCode | string | Código de segurança do cartão. | Não |  |
+  | brand | string | Bandeira do cartão. Valores possíveis:  <br>`Visa`  <br>`Mastercard`  <br>`Amex`  <br>`Elo`  <br>`Hipercard` | Sim |  |
+}

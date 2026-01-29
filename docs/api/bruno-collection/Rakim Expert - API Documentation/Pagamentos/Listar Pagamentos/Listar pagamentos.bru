@@ -1,0 +1,376 @@
+meta {
+  name: Listar pagamentos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}payments/api/sales
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: GET
+    mode: none
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "currentPage": 1,
+          "data": [
+            {
+              "id": "010000003811041456460000064215020000000000",
+              "orderNumber": "6183f4ac7ad8d",
+              "onlineId": null,
+              "authorizationCode": "007019",
+              "nsu": "61a7d95711f57",
+              "amount": 3990,
+              "netValue": 3730,
+              "fee": 260,
+              "installments": 1,
+              "type": "CREDIT",
+              "acquirer": "ADIQ",
+              "currency": "BRL",
+              "country": "BRA",
+              "lastStatus": "AUTHORIZED",
+              "createdAt": "2021-11-04 11:56:50",
+              "updatedAt": "2021-11-04 11:56:50",
+              "status": {
+                "code": 3,
+                "returnCode": "0",
+                "returnMessage": "Sucesso"
+              },
+              "card": {
+                "holder": "TESTE HOLDER",
+                "number": "5201********5011",
+                "expiryMonth": "09",
+                "expiryYear": "2024",
+                "brand": "mastercard"
+              },
+              "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": "11999999999",
+                "birthDate": "1969-12-31",
+                "billingAddress": {
+                  "street": "Rua teste",
+                  "number": "1",
+                  "district": "Bairro teste",
+                  "complement": "Complemento teste",
+                  "zipcode": "99999999",
+                  "city": "São Paulo",
+                  "state": "SP",
+                  "country": "BRA"
+                }
+              },
+              "metadata": []
+            },
+            {
+              "id": "2b2e9984-b5f5-4095-9daf-48b60b6f129a",
+              "orderNumber": "2360c77b-8a82-463d-b875-543b234fd087",
+              "onlineId": null,
+              "authorizationCode": "E3822485720240517173743042165312",
+              "nsu": null,
+              "amount": 1035,
+              "netValue": 945,
+              "fee": 90,
+              "installments": 1,
+              "type": "PIX",
+              "acquirer": "ULTRABANK",
+              "currency": "BRL",
+              "country": "BRA",
+              "lastStatus": "AUTHORIZED",
+              "createdAt": "2024-05-17 14:36:01",
+              "updatedAt": "2024-05-17 14:38:45",
+              "status": {
+                "code": 3,
+                "returnCode": "0",
+                "returnMessage": "Sucesso"
+              },
+              "card": null,
+              "customer": {
+                "name": "Comprador Teste",
+                "document": "99999999999",
+                "email": "example@test.com",
+                "phone": null,
+                "birthDate": null,
+                "billingAddress": {
+                  "street": "Rua teste",
+                  "number": null,
+                  "complement": null,
+                  "district": null,
+                  "zipcode": "99999999",
+                  "city": "São Paulo",
+                  "state": "SP",
+                  "country": "BRA"
+                }
+              },
+              "metadata": []
+            }
+          ],
+          "from": 1,
+          "firstPage": 1,
+          "lastPage": 1,
+          "perPage": 1,
+          "to": 1,
+          "total": 1
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales?dateStart=2023-10-01&dateEnd=2023-12-31
+    method: GET
+    mode: none
+    params:query: {
+      dateStart: 2023-10-01
+      dateEnd: 2023-12-31
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Bad Request
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Interval between dateStart and dateEnd must be less than 30 days"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: GET
+    mode: none
+    params:query: {
+      ~brand: visa
+      ~max_installments: 12
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales?perPage=2001&id=01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a&orderNumber=01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a&onlineId=01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a&authorizationCode=01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a&nsu=01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173ansunsunsu01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f5625317301940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f5625317301940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173&type=CREDITT&status=NOT_REFUNDED&amount=1234567890123456&brand=viza&installments=13&dateStart=12-01-2024&dateEnd=01-12-2024
+    method: GET
+    mode: none
+    params:query: {
+      perPage: 2001
+      id: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      orderNumber: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      onlineId: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      authorizationCode: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      nsu: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173ansunsunsu01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f5625317301940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f5625317301940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173
+      type: CREDITT
+      status: NOT_REFUNDED
+      amount: 1234567890123456
+      brand: viza
+      installments: 13
+      dateStart: 12-01-2024
+      dateEnd: 01-12-2024
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "perPage": [
+            "The per page may not be greater than 2000."
+          ],
+          "id": [
+            "The id may not be greater than 45 characters."
+          ],
+          "orderNumber": [
+            "The order number may not be greater than 45 characters."
+          ],
+          "onlineId": [
+            "The online id may not be greater than 45 characters."
+          ],
+          "authorizationCode": [
+            "The authorization code may not be greater than 45 characters."
+          ],
+          "nsu": [
+            "The nsu may not be greater than 255 characters."
+          ],
+          "type": [
+            "The selected type is invalid."
+          ],
+          "status": [
+            "The selected status is invalid."
+          ],
+          "amount": [
+            "The amount may not be greater than 15 characters."
+          ],
+          "brand": [
+            "The selected brand is invalid."
+          ],
+          "installments": [
+            "The installments may not be greater than 12."
+          ],
+          "dateStart": [
+            "The date start does not match the format Y-m-d."
+          ],
+          "dateEnd": [
+            "The date end does not match the format Y-m-d."
+          ]
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Erro Interno no Servidor
+  
+  request: {
+    url: {{URL}}payments/api/sales
+    method: GET
+    mode: none
+    params:query: {
+      ~perPage: 2001
+      ~id: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      ~orderNumber: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      ~onlineId: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      ~authorizationCode: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173a
+      ~nsu: 01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173ansunsunsu01940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f5625317301940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f5625317301940b92-5caa-7a1d-bc5f-752d8769a55b01940b92-9eef-73aa-831c-b6f56253173
+      ~type: CREDITT
+      ~status: NOT_REFUNDED
+      ~amount: 1234567890123456
+      ~brand: viza
+      ~installments: 13
+      ~dateStart: 12-01-2024
+      ~dateEnd: 01-12-2024
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Internal Server Error
+      text: 500
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "error": "Server Error"
+        }
+      '''
+    }
+  }
+}

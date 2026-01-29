@@ -1,0 +1,148 @@
+meta {
+  name: Cadastrar Webhook
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/api/notifications/webhooks
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+body:json {
+  {
+      
+  }
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/notifications/webhooks
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "url": "string",
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "status": "success",
+            "url": "https://api.u2pay.com.br/app/api/notifications/webhooks",
+            "apiAccessKey": "d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}app/api/notifications/webhooks
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "url": "string",
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}app/api/notifications/webhooks
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "url": [
+            "The url field is required."
+          ]
+        }
+      '''
+    }
+  }
+}

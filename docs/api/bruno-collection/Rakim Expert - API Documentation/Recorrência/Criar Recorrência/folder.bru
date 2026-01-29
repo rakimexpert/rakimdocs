@@ -1,0 +1,42 @@
+meta {
+  name: Criar Recorrência
+  seq: 2
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  ## Parâmetros do Objeto
+  
+  ### Geral
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **amount** | int32 | Valor do pagamento em centavos sem vírgula e ponto. | Sim | \- |
+  | **order_id** | string | ID identificador do número do pedido. | Não | \- |
+  | **typeCharge** | int32 | Tipo de recorrência relacionada. Valores possíveis:  <br>1 - Cobrar para sempre  <br>2 - Cobrar até uma data  <br>3 - Cobrar Nº parcelas | Sim | \- |
+  | **totalCharges** | int32 | Número de cobranças a realizar. Obrigatório quando o tipo de recorrência enviado for cobrança por Nº parcelas. | Não | \- |
+  | **finalDate** | date | Data do último pagamento a ser realizado. Obrigatório quando o tipo de recorrência for até uma data. | Não | \- |
+  | **payment** | Payment | Informações do pagamento de recorrência. | Sim | \- |
+  | **customer** | Customer | Informações do participante da recorrência. | Sim | \- |
+  
+  ### Payment
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **type** | string | Método de pagamento. Valores possíveis: `credit`. | Sim | \- |
+  | **softdescriptor** | string | Texto exibido na fatura do cartão do comprador. | Não | \- |
+  | **currency_code** | string | Moeda na qual o pagamento será realizado. Valores possíveis: `BRL`. | Não | BRL |
+  
+  ### Customer
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **name** | string | Nome do cliente participante da recorrência. | Sim | \- |
+  | **document** | string | Número de documento do participante. | Não | \- |
+  | **email** | string | Email do participante. | Não | \- |
+  | **phone** | string | Celular do participante. | Não | \- |
+  | **birthdate** | date | Data de nascimento do participante. | Não | \- |
+}

@@ -1,0 +1,140 @@
+meta {
+  name: Lista vault
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}payments/api/vaults/cards/:documentNumber
+  body: none
+  auth: inherit
+}
+
+params:path {
+  documentNumber: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/vaults/cards/:documentNumber
+    method: GET
+    mode: json
+    params:path: {
+      documentNumber: 51255228059
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "vaultId": "2beaeb98-391d-41d9-8685-61464f3c0789"
+          },
+          {
+            "vaultId": "186bca66-3452-4c3c-8f8e-599e1b323044"
+          }
+        ]
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/vaults/cards/:documentNumber
+    method: PUT
+    mode: json
+    params:path: {
+      documentNumber: 51255228059
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token invalid"
+        }
+      '''
+    }
+  }
+}

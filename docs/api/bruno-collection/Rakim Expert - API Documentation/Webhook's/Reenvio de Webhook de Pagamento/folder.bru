@@ -1,0 +1,18 @@
+meta {
+  name: Reenvio de Webhook de Pagamento
+  seq: 2
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Esse é o endpoint destinado a solicitação de reenvio da webhook relacionado a um pagamento.
+  
+  ## Body Params
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | ID identificador do pagamento. | Sim |  |
+}

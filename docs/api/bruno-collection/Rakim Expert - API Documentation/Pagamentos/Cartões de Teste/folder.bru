@@ -1,0 +1,28 @@
+meta {
+  name: Cartões de Teste
+  seq: 13
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Utilize os _**cartões**_ abaixo para testar todos os fluxos da API e mapeie os retornos esperados para cada operação.
+  
+  _Estes Cartões-Teste funcionam apenas no ambiente de Sand-Box._
+  
+  > 📘 **Notas importantes para o teste:** 
+    
+  
+  | Número do Cartão | Credenciais | Bandeira | Comportamento |
+  | --- | --- | --- | --- |
+  | 5201561050025011 | **Cvv** 123 | MASTERCARD | Autorização **bem sucedida**.  <br>Retorna status `1 - Pré-Capturado` ou `3 - Autorizado`. |
+  | 5407701420954753 | **Cvv** 123 | MASTERCARD | Autorização **negada - Cartão Expirado**.  <br>Retorna status `7 - Negada`. |
+  | 5294393544023057 | **Cvv** 123 | MASTERCARD | Autorização **negada - Cartão Cancelado**.  <br>Retorna status `7 - Negada`. |
+  | 5435496042806715 | **Cvv** 123 | MASTERCARD | Autorização **negada - Cartão Bloqueado**.  <br>Retorna status `7 - Negada`. |
+  | 5429496036975128 | **Cvv** 123 | MASTERCARD | Autorização **negada - Problemas com cartão de Crédito**.  <br>Retorna status `7 - Negada`. |
+  | 5179152600128782 | **Cvv** 123 | MASTERCARD | Autorização **negada - Não autorizado**.  <br>Retorna status `7 - Negada`. |
+  
+  > 🚧 **Atenção**
+}

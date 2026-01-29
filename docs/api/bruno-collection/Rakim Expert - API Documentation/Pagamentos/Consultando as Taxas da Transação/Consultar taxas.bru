@@ -1,0 +1,2325 @@
+meta {
+  name: Consultar taxas
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}payments/api/sales/fees/calculate
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  ## Schemas
+  
+  ### Parameters
+  
+  | Nome | Tipo | Descrição | Required | Default |
+  | --- | --- | --- | --- | --- |
+  | paymentId | string | Identificador único do pagamento. | Sim |  |
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/sales/fees/calculate?payment_methods=credit&amount=10000&brand=visa&max_installments=12
+    method: GET
+    mode: json
+    params:query: {
+      payment_methods: credit
+      amount: 10000
+      brand: visa
+      max_installments: 12
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "paymentMethods": {
+            "creditCard": {
+              "visa": {
+                "installmentPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 558,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9442,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 757,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9243,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3333,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 878,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9122,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2500,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 999,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9001,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1129,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8871,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1667,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1241,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8759,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1429,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1389,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8611,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1250,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1508,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8492,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1111,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1630,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8370,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1750,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8250,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 909,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1868,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8132,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 833,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1990,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8010,
+                      "currency": "BRL"
+                    }
+                  }
+                ],
+                "installmentInterestPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10558,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10558,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 558,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5379,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10757,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 757,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3626,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10878,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 878,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2750,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10999,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 999,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2226,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11129,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1129,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1874,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11242,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1242,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1627,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11388,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1388,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1439,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11509,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1509,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1292,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11630,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1630,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1175,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11750,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1750,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 1079,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11871,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1871,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 999,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11991,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1991,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  }
+                ]
+              },
+              "mastercard": {
+                "installmentPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 558,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9442,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 757,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9243,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3333,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 878,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9122,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2500,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 999,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9001,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1121,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8879,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1667,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1241,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8759,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1429,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1389,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8611,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1250,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1508,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8492,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1111,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1630,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8370,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1750,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8250,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 909,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1868,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8132,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 833,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1990,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8010,
+                      "currency": "BRL"
+                    }
+                  }
+                ],
+                "installmentInterestPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10558,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10558,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 558,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5379,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10757,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 757,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3626,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10878,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 878,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2750,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10999,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 999,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2224,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11120,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1120,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1874,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11242,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1242,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1627,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11388,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1388,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1439,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11509,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1509,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1292,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11630,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1630,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1175,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11750,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1750,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 1079,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11871,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1871,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 999,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11991,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1991,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  }
+                ]
+              },
+              "hipercard": {
+                "installmentPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 562,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9438,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 774,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9226,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3333,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 896,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9104,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2500,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1016,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8984,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1138,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8862,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1667,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1257,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8743,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1429,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1399,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8601,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1250,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1519,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8481,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1111,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1640,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8360,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1759,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8241,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 909,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1880,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8120,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 833,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 2000,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8000,
+                      "currency": "BRL"
+                    }
+                  }
+                ],
+                "installmentInterestPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10562,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10562,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 562,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5387,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10774,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 774,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3632,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10895,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 895,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2754,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11016,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1016,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2227,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11137,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1137,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1876,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11258,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1258,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1628,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11399,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1399,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1440,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11519,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1519,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1293,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11640,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1640,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1176,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11760,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1760,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 1080,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11881,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1881,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 1000,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 12001,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 2001,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  }
+                ]
+              },
+              "elo": {
+                "installmentPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 562,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9438,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 774,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9226,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3333,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 896,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9104,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2500,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1016,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8984,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1138,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8862,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1667,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1257,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8743,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1429,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1399,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8601,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1250,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1519,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8481,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1111,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1640,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8360,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1759,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8241,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 909,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1880,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8120,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 833,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 2000,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8000,
+                      "currency": "BRL"
+                    }
+                  }
+                ],
+                "installmentInterestPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10562,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10562,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 562,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5387,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10774,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 774,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3632,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10895,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 895,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2754,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11016,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1016,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2227,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11137,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1137,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1876,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11258,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1258,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1628,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11399,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1399,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1440,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11519,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1519,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1293,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11640,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1640,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1176,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11760,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1760,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 1080,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11881,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1881,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 1000,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 12001,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 2001,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  }
+                ]
+              },
+              "amex": {
+                "installmentPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 562,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9438,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 774,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9226,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3333,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 896,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 9104,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2500,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1016,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8984,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1138,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8862,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1667,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1257,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8743,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1429,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1399,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8601,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1250,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1519,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8481,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1111,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1640,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8360,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1000,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1759,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8241,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 909,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1880,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8120,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 833,
+                    "interestFree": true,
+                    "amount": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 2000,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 8000,
+                      "currency": "BRL"
+                    }
+                  }
+                ],
+                "installmentInterestPlans": [
+                  {
+                    "installments": 1,
+                    "installmentValue": 10562,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10562,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 562,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 2,
+                    "installmentValue": 5387,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10774,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 774,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 3,
+                    "installmentValue": 3632,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 10895,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 895,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 4,
+                    "installmentValue": 2754,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11016,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1016,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 5,
+                    "installmentValue": 2227,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11137,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1137,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 6,
+                    "installmentValue": 1876,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11258,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1258,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 7,
+                    "installmentValue": 1628,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11399,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1399,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 8,
+                    "installmentValue": 1440,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11519,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1519,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 9,
+                    "installmentValue": 1293,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11640,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1640,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 10,
+                    "installmentValue": 1176,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11760,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1760,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 11,
+                    "installmentValue": 1080,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 11881,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 1881,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  },
+                  {
+                    "installments": 12,
+                    "installmentValue": 1000,
+                    "interestFree": false,
+                    "amount": {
+                      "value": 12001,
+                      "currency": "BRL"
+                    },
+                    "totalFee": {
+                      "value": 2001,
+                      "currency": "BRL"
+                    },
+                    "liquid": {
+                      "value": 10000,
+                      "currency": "BRL"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}payments/api/sales/fees/calculate?payment_methods=credit&amount=10000&brand=visa&max_installments=0
+    method: GET
+    mode: json
+    params:query: {
+      payment_methods: credit
+      amount: 10000
+      brand: visa
+      max_installments: 0
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Bad Request
+      text: 400
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "The maximum number of installments must be between 1 and 12."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/sales/fees/calculate?payment_methods=credit&amount=10000
+    method: PUT
+    mode: json
+    params:query: {
+      payment_methods: credit
+      amount: 10000
+      ~brand: visa
+      ~max_installments: 12
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/sales/fees/calculate?brand=vizza
+    method: PUT
+    mode: json
+    params:query: {
+      ~payment_methods: credit
+      ~amount: 10000
+      brand: vizza
+      ~max_installments: 12
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "customerName": "Comprador Teste",
+        "documentNumber": "99999999999",
+        "cardNumber": "5201561050025011",
+        "cardHolderName": "TESTE HOLDER",
+        "expirationMonth": "09",
+        "expirationYear": "24",
+        "securityCode": "123",
+        "brand": "mastercard"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "payment_methods": [
+            "The payment methods field is required."
+          ],
+          "amount": [
+            "The amount field is required."
+          ],
+          "brand": [
+            "The selected brand is invalid."
+          ]
+        }
+      '''
+    }
+  }
+}

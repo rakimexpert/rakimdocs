@@ -1,0 +1,76 @@
+meta {
+  name: Criar Link de Pagamento
+  seq: 2
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Este endpoint é destinada a criação de link's de pagamento padrão da plataforma com checkout de pagamento para o cliente pagar através de Pix ou Cartão de Crédito.
+  
+  ## Body Parameters
+  
+  ### Geral
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **amount** | int32 | Valor do pagamento em centavos sem vírgula e ponto. (Max 9999999999). | Sim | \- |
+  | **currency** | string | Moeda na qual o link de pagamento será criado. Valores permitidos: `BRL`, `USD`. | Não | BRL |
+  | **maxNumberOfInstallments** | int32 | Número máximo de parcelas que o comprador pode selecionar. (Max 12x). | Sim | \- |
+  | **maxInstallmentsNoInterest** | int32 | Quantidade de parcelas sem juros. (Max 12x). | Não | \- |
+  | **expiredLink** | date | Data de expiração do link de pagamento. | Não | \- |
+  | **nameCheckout** | string | Nome do link de pagamento. (Max 255 caracteres). | Não | \- |
+  | **descriptionCheckout** | string | Descrição do link de pagamento. | Não | \- |
+  | **dueDateLink** | date | Data de vencimento do link de pagamento. Caso os atributos `interestRateVariable` e `interestRateFixed` estejam preenchidos, este campo é obrigatório. | Não | \- |
+  | **interestRateVariable** | int32 | Taxa de juros variável cobradas mês a mês após a data de vencimento. Obrigatório preencher propriedade `dueDateLink` ao enviar valores nesta propriedade. (Max 99999). | Não | \- |
+  | **interestRateFixed** | int32 | Valor de multa fixa caso a data de vencimento seja superada. Sem vírgula e ponto. Obrigatório preencher propriedade `dueDateLink` ao enviar valores nesta propriedade. | Não | \- |
+  | **redirectUrl** | string | URL para redirecionamento do comprador após a finalização do pagamento (Max 255 caracteres). Exemplo: `https://ultrapayments.com.br`. | Não | \- |
+  | **customer** | Customer | Informações do cliente que receberá o link de pagamento. | Sim | \- |
+  | **splits** | Splits\[\] | Split do Pagamento. | Não | \- |
+  | **metadata** | Metadata | O parâmetro metadata permite que os usuários anexem informações adicionais a uma transação. Isso pode incluir qualquer par de chave-valor que forneça contexto ou detalhes adicionais sobre a transação. O metadata não é utilizado pela API para processar a transação, mas pode ser útil para o registro do usuário ou para a integração com outros sistemas. | Não | \- |
+  | **discountType** | string | Determina o tipo do desconto. | Não | \- |
+  | **discount** | int32 | Valor do desconto. Para `PERCENTAGE`, aplica-se como percentual. Para `AMOUNT`, aplica-se como valor fixo. | Não | \- |
+  
+  ### Customer
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **name** | string | Nome completo do cliente que receberá o link de pagamento. (Max 150 caracteres). | Sim | \- |
+  | **email** | string | Email do cliente que receberá o link de pagamento. (Max 255 caracteres). | Sim | \- |
+  | **mobile** | string | Celular do cliente que receberá o link de pagamento. (Max 11 caracteres). | Não | \- |
+  | **birthDate** | date | Data de nascimento do cliente que receberá o link de pagamento. | Não | \- |
+  | **documentNumber** | string | Número CPF/CNPJ do cliente que receberá o link de pagamento. (Max 14 caracteres). | Sim | \- |
+  | **address** | Address | Endereço do cliente que receberá o link de pagamento. | Não | \- |
+  
+  ### Address
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **zipcode** | string | CEP do endereço. | Não | \- |
+  | **street** | string | Logradouro do endereço. | Não | \- |
+  | **number** | string | Número do endereço. | Não | \- |
+  | **complement** | string | Complemento do endereço. | Não | \- |
+  | **district** | string | Bairro do endereço. | Não | \- |
+  | **city** | string | Cidade do endereço. | Não | \- |
+  | **state** | string | Estado do endereço (sigla). | Não | \- |
+  | **country** | string | País do endereço. Defaults to `BRA`. | Não | BRA |
+  
+  ### Splits
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **recipientToken** | string | Token do Estabelecimento. | Sim | \- |
+  | **merchantType** | string | Tipo de participante do pagamento. Valores possíveis: `PRIMARY`, `SECONDARY`. | Sim | \- |
+  | **type** | string | Define a divisão do valor do split de maneira fixa ou percentual. Valores possíveis: `PERCENTAGE`, `AMOUNT`. | Sim | \- |
+  | **chargeFee** | boolean | Define se o participante é o pagador da taxa do pagamento. Defaults to `false`. | Sim | false |
+  | **amountSplit** | float | Valor do split destinado ao participante. Para valores fixos, em centavos. Para percentuais, de 0 a 100. | Sim | \- |
+  
+  ### Metadata
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **key** | string | Chave personalizada do metadado. | Não | \- |
+  | **value** | string | Valor correspondente ao metadado. | Não | \- |
+}

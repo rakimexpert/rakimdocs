@@ -1,0 +1,177 @@
+meta {
+  name: Busca estabelecimento
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}app/api/companies/list/:accessToken
+  body: none
+  auth: inherit
+}
+
+params:path {
+  accessToken: 
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/companies/list/:accessToken
+    method: GET
+    mode: none
+    params:path: {
+      accessToken: 7612adf805f3408786d9181474977fd607149331
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "company": {
+                "properties": {
+                    "mccCode": "8931",
+                    "mccDescription": "Contadores",
+                    "companyName": "Bruno E Ana Consultoria Financeira Me",
+                    "socialReason": "Bruno E Ana Consultoria Financeira Me",
+                    "type": "CNPJ",
+                    "typeClass": "STO",
+                    "documentNumber": "80017668000180",
+                    "softDescriptor": "consultoria",
+                    "active": "active"
+                }
+            },
+            "address": {
+                "properties": {
+                    "street": "Avenida Caetano Ruggieri",
+                    "number": "259",
+                    "district": "Parque Das Rosas",
+                    "city": "Itu",
+                    "state": "SP",
+                    "complement": null,
+                    "zipCode": "13310600",
+                    "country": "BRA"
+                }
+            },
+            "contact": {
+                "properties": {
+                    "name": "Lúcia Benedita Galvão",
+                    "email": "pesquisa@brunoeanaconsultoriafinanceirame.com.br",
+                    "mobile": "11997098755",
+                    "document": "18613145078"
+                }
+            },
+            "bankAccount": {
+                "properties": {
+                    "accountNumber": "1066888",
+                    "accountDigit": "8",
+                    "branchNumber": "1202",
+                    "branchDigit": null,
+                    "bankCode": "000",
+                    "bankName": "BANCO TESTE"
+                }
+            }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Falha na Requisição
+  
+  request: {
+    url: {{URL}}app/api/companies/list/:accessToken
+    method: GET
+    mode: none
+    params:path: {
+      accessToken: 7612adf805f3408786d9181474977fd607149331
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": ""
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}app/api/companies/list/:accessToken
+    method: GET
+    mode: none
+    params:path: {
+      accessToken: 7612adf805f3408786d9181474977fd607149331
+    }
+  
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": ""
+        }
+      '''
+    }
+  }
+}

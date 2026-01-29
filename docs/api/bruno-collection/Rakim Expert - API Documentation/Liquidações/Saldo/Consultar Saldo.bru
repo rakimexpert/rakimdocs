@@ -1,0 +1,98 @@
+meta {
+  name: Consultar Saldo
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}app/api/bank/balance
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}app/api/bank/balance
+    method: GET
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+          "amount":12.34,
+          "pixKey":"dc7a478j-196l-03fm-t6gh-4298er7845m2",
+          "webHookURL":"https://minhaURL.com.br/callback"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "balance": 1542.03,
+            "blockedBalance": 12.00
+        }
+        
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}app/api/bank/withdraw
+    method: GET
+    mode: none
+    headers: {
+      Authorization: Bearer <access_token>
+      Content-Type: application/json
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unprocessable Content
+      text: 422
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+            "code": 400,
+            "message": "erro"
+        }
+      '''
+    }
+  }
+}

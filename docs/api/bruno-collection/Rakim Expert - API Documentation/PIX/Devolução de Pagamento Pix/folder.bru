@@ -1,0 +1,25 @@
+meta {
+  name: Devolução de Pagamento Pix
+  seq: 4
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Solicite a devolução total das cobranças Pix criadas pagas.
+  
+  ## Path Params
+  | Nome               | Tipo   | Descrição                                                                                              | Obrigatório | Default |
+  |--------------------|--------|------------------------------------------------------------------------------------------------------|-------------|---------|
+  | **paymentId**         | string | ID identificador da cobrança pix.                                                  | Sim         | -       |
+  
+  
+  ## Body Params
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **amount** | string | Valor da devolução em centavos sem vírgula e ponto. | Sim | \- |
+  | **returnReasonCode** | string | Código contendo o motivo de devolução. Valores possíveis:  <br>\- **MD06**: Devolução de pagamento instantâneo solicitado pelo usuário recebedor.  <br>\- **FR01**: Devolução de pagamento instantâneo motivada por fundada suspeita de fraude.  <br>\- **BE08**: Devolução de pagamento iniciada pelo participante do usuário recebedor. | Sim | \- |
+}

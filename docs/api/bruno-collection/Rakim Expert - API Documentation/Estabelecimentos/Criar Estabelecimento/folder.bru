@@ -1,0 +1,85 @@
+meta {
+  name: Criar Estabelecimento
+  seq: 2
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  EndPoint destinado a criação de Lojas
+  
+  ## Parâmetros do Objeto
+  
+  ### Estabelecimento
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **commercialName** | string | Nome comercial da loja. | Sim | \- |
+  | **type** | int32 | Tipo de Estabelecimento:  <br>1 - Pessoa Física  <br>2 - Pessoa Jurídica. | Sim | \- |
+  | **typeClass** | string | Tipo de classe. Valores possíveis: `STO` - Loja. | Não | STO |
+  | **socialReason** | string | Razão social da empresa. | Sim | \- |
+  | **documentNumber** | string | Número do documento de estabelecimento. | Sim | \- |
+  | **cnaeId** | int32 | ID identificador do CNAE. Consulte o ID identificador do CNAE clicando [aqui](#). | Sim | \- |
+  | **softDescriptor** | string | Texto exibido na fatura do cartão do comprador. | Sim | \- |
+  | **siteUrl** | string | Site do Estabelecimento. | Não | \- |
+  | **companyId** | number | Codigo identificador do whiteLabel | Sim |  |
+  | **foundationDate** | date | Data de Fundação do estabelecimento. | Sim | \- |
+  | **companyFormationCode** | string | Tipo da composição da empresa:  <br>`01` - Sociedade Anônima  <br>`02` - Limitada  <br>`03` - Microempreendedor Individual  <br>`04` - Microempresa  <br>`05` - Empresa de Pequeno Porte  <br>`06` - Empresa Individual de Responsabilidade Limitada | Sim | \- |
+  | **automaticAntecipation** | boolean | Indica se o estabelecimento irá trabalhar com antecipação automática. | Não | false |
+  | **isTransactionsPix** | string | Indica se o estabelecimento irá trabalhar com transações de Pix. | Não | false |
+  | **representative** | Representative | Informações do representante do estabelecimento. | Sim |  |
+  | **address** | Address | Endereço do Estabelecimento. | Sim |  |
+  | **contact** | Contact | Informações de contato do estabelecimento. | Sim |  |
+  | **bankAccount** | BankAccount | Conta Bancária do estabelecimento. | Sim |  |
+  
+  ### Representative
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **name** | string | Nome completo do representante do Estabelecimento. | Sim | \- |
+  | **mother** | string | Nome completo da Mãe do Representante. Obrigatório quando `isTransactionsPix` for `true`. | Não | \- |
+  | **email** | string | E-mail do Representante. | Sim | \- |
+  | **mobile** | string | Celular do Representante. | Sim | \- |
+  | **birthDate** | date | Data de nascimento do Representante. | Sim | \- |
+  | **cpf** | string | CPF do Representante. | Sim | \- |
+  | **rg** | string | RG do Representante. | Não | \- |
+  | **address** | Address | Endereço do Representante.  <br>Obrigatório quando o isTransactionsPix for true. | Não |  |
+  
+  #### Address
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **zipcode** | string | O CEP do endereço. | Sim | \- |
+  | **street** | string | Logradouro do endereço. | Sim | \- |
+  | **number** | string | Número do endereço. | Sim | \- |
+  | **district** | string | Bairro do endereço. | Sim | \- |
+  | **complement** | string | Complemento do endereço. | Não | \- |
+  | **city** | string | Cidade do endereço. | Sim | \- |
+  | **state** | string | Estado (sigla) do endereço. | Sim | \- |
+  
+  ### Contact
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **name** | string | Nome completo do contato. | Sim | \- |
+  | **email** | string | Email do contato. | Sim | \- |
+  | **mobile** | string | Celular do contato. | Sim | \- |
+  | **birthDate** | date | Data de nascimento do contato. | Não | \- |
+  | **cpf** | string | CPF do contato. | Não | \- |
+  | **rg** | string | RG do contato. | Não | \- |
+  
+  ### BankAccount
+  
+  | Nome | Tipo | Descrição | Obrigatório | Default |
+  | --- | --- | --- | --- | --- |
+  | **bankAccountTypeId** | string | Tipo de Conta. Valores possíveis:  <br>`1` - Conta Corrente. | Sim | \- |
+  | **bankId** | int32 | ID identificador do banco. Consulte os bancos disponíveis na plataforma. | Sim | \- |
+  | **agency** | string | Agência do Estabelecimento. | Sim | \- |
+  | **digitAgency** | string | Dígito da Agência. | Não | \- |
+  | **account** | string | Número da conta. | Sim | \- |
+  | **digitAccount** | string | Dígito da conta. | Sim | \- |
+  | **holderTypeId** | string | Tipo de estabelecimento:  <br>`1` - Pessoa Física  <br>`2` - Pessoa Jurídica. | Sim | \- |
+  | **pixKey** | string | Chave PIX da conta. Aceitamos apenas chave aleatória. | Não | \- |
+}

@@ -1,0 +1,41 @@
+meta {
+  name: Introdução a Autenticação - Rakim Global API's
+  seq: 1
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Esta sessão exemplifica o _**Modo**_ de autenticação da _**RAKIM GLOBAL API's.**_
+  
+  Dependendo do endpoint utilizado, se faz necessário um modelo de autenticação aderente ao método chamado.
+  
+  Por exemplo, ao chamar recursos como "_Estabelecimentos_", "_Antecipações_", "_Pagamentos_", "_Link's de Pagamento_", "_Recorrência_", "_Liquidações_" e "_Pix_" será necessário a utilização da **autenticação de pagamento**.
+  
+  ## Autenticação de Pagamento
+  
+  A **Autenticação de Pagamento** é um método de autorização por _**Chave Única,**_ cuja é responsável por identificar o cliente pelo _**TOKEM**_ fornecido e validar seu acesso ao endpoint.
+  
+  Nesse estilo de autenticação, não há a necessidade de geração de um token temporário de sessão, pois é baseado no padrão _**Bearer Authentication**_.
+  
+  | Recursos desse método: |
+  | --- |
+  | Estabelecimentos |
+  | Antecipações |
+  | Pagamentos |
+  | Link de Pagamentos |
+  | Recorrência |
+  | Liquidações |
+  | Pix |
+  | Webhook's |
+  
+  ### Como obter a chave unica de autenticação? (TOKEM)
+  
+  Para obter a chave única de autenticação de pagamento, **(**_**TOKEN DE INTEGRAÇÃO)**_, é necessário logar na plataforma [https://expert.rakim.com/login](https://expert.rakim.com/login), clicar no link: **"Minha Conta"** e acessar o sub-link **"Meus Dados".**
+  
+  Você precisará de um usuário com **permissão de visualização da Chave de Autenticação.**
+  
+  <img src="https://content.pstmn.io/e867d038-488f-425b-a26b-537da38fbaf9/Q2FwdHVyYSBkZSBUZWxhIDIwMjUtMDEtMjkgYcyAcyAxNC40OC41Ny5wbmc=">
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Atualizar Antecipação Automática
+  seq: 2
+}
+
+auth {
+  mode: inherit
+}
+
+docs {
+  Esse é o endpoint destinado a atualização via API da antecipação automática ou não do estabelecimento. Se atente a qual tipo de operação você está atualizando a antecipação automática, visto que você pode desativa-lá ou ativa-lá tanto em operações onlines quanto operações físicas simultaneamente.
+  
+  | Nome                  | Tipo   | Descrição                                                                          | Obrigatório | Default |
+  |-----------------------|--------|----------------------------------------------------------------------------------|-------------|---------|
+  | automaticAntecipation | string | Indica se antecipação será automática. Valores possíveis: Y - Ativar Antecipação, N - Desativar Antecipação. | Sim         | Y       |
+  | type                  | string | Tipo de operação relacionada à antecipação automática. Valores possíveis: pos - Operação Física, online - Operação Digital. | Sim         | pos     |
+  | idCompany             | string | ID identificador do estabelecimento.                                              | Sim         | -       |
+  
+}

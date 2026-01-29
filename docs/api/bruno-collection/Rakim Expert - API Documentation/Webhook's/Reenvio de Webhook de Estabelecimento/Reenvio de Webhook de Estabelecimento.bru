@@ -1,0 +1,138 @@
+meta {
+  name: Reenvio de Webhook de Estabelecimento
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}app/payments/api/notifications/webhooks/companies/retry
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer <access_token>
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: Sucesso
+  
+  request: {
+    url: {{URL}}payments/api/notifications/webhooks/companies/retry
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "url": "string",
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: OK
+      text: 200
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Webhook sent"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Não Autorizada
+  
+  request: {
+    url: {{URL}}payments/api/notifications/webhooks/companies/retry
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "url": "string",
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Unauthorized
+      text: 401
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Token not provided, authorization denied"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Requisição Inválida
+  
+  request: {
+    url: {{URL}}payments/api/notifications/webhooks/companies/retry
+    method: POST
+    mode: json
+    headers: {
+      Authorization: Bearer <access_token>
+    }
+  
+    body:json: {
+      {
+        "apiAccessKey": "string"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: Internal Server Error
+      text: 500
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "error": "Server Error"
+        }
+      '''
+    }
+  }
+}
